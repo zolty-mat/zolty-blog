@@ -1,0 +1,37 @@
+[
+  {
+    "topic": "Building a Production-Grade K3s Cluster on Proxmox VE",
+    "notes": "Cover hardware selection (ThinkCentre M920q), Proxmox VM provisioning with Terraform, k3s HA setup with embedded etcd. Mention the 10GbE backbone.",
+    "generated": null
+  },
+  {
+    "topic": "Longhorn Distributed Storage: Setup, Gotchas, and Lessons Learned",
+    "notes": "Cover installation, replica configuration, the PGDATA lost+found issue, RWO PVC deadlocks with RollingUpdate strategy, and auto-balancing.",
+    "generated": null
+  },
+  {
+    "topic": "Self-Hosted CI/CD: Running GitHub Actions Runners on K3s with ARC",
+    "notes": "Cover Actions Runner Controller setup, scaling configuration, multi-arch runners (amd64 + arm64), organization-scoped runners, and the repo-level secrets requirement.",
+    "generated": null
+  },
+  {
+    "topic": "Automated TLS with cert-manager and Let's Encrypt DNS-01 on Route53",
+    "notes": "Cover cert-manager installation, ClusterIssuer configuration for DNS-01 challenge via Route53, wildcard certificates, and common debugging steps.",
+    "generated": null
+  },
+  {
+    "topic": "Full-Stack Observability: Prometheus, Grafana, Loki, and AI-Powered Alerting",
+    "notes": "Cover the monitoring stack setup, custom alert rules, Alertmanager routing, and the AI-powered alert responder that analyzes alerts via Bedrock and posts to Slack.",
+    "generated": null
+  },
+  {
+    "topic": "The Service Selector Trap: How 50% of My Traffic Went to PostgreSQL",
+    "notes": "Post-mortem style article about the most common anti-pattern: when PostgreSQL shares a namespace with the app, the Service selector must include component: web label or traffic gets routed to Postgres.",
+    "generated": null
+  },
+  {
+    "topic": "10GbE Homelab Networking with Ubiquiti and Mellanox on a Budget",
+    "notes": "Cover the USW Aggregation switch, Mellanox ConnectX-3 NICs, active-backup bonds, VLAN segmentation, and the LACP order-of-operations lesson.",
+    "generated": null
+  }
+]

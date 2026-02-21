@@ -1,0 +1,14 @@
+[highlight]
+  anchorLineNos = false
+  codeFences = true
+  guessSyntax = true
+  lineNos = false
+  noClasses = false
+  style = "monokai"
+
+[goldmark]
+  [goldmark.renderer]
+    unsafe = true
+  [goldmark.extensions]
+    [goldmark.extensions.passthrough]
+      enable = true

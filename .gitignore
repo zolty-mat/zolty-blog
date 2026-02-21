@@ -1,0 +1,40 @@
+# Hugo
+hugo/public/
+hugo/resources/_gen/
+hugo/.hugo_build.lock
+
+# Theme (managed as submodule)
+# hugo/themes/PaperMod/  -- tracked via git submodule
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform.lock.hcl
+terraform/crash.log
+
+# Environment / secrets
+.env
+.env.*
+*.pem
+*.key
+credentials.json

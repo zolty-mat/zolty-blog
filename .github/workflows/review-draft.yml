@@ -1,0 +1,38 @@
+name: Preview Draft
+
+on:
+  pull_request:
+    paths:
+      - 'hugo/content/**'
+      - 'hugo/layouts/**'
+      - 'hugo/config/**'
+      - 'hugo/assets/**'
+
+jobs:
+  preview:
+    name: Build Hugo Preview
+    runs-on: [self-hosted, k3s, linux, amd64]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.156.0'
+          extended: true
+
+      - name: Build site (draft mode)
+        working-directory: hugo
+        run: hugo --buildDrafts --baseURL "https://preview.blog.zolty.systems/"
+
+      - name: Report build status
+        if: success()
+        run: |
+          echo "## Hugo Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Pages generated: $(find hugo/public -name '*.html' | wc -l)" >> $GITHUB_STEP_SUMMARY
+          echo "- Total size: $(du -sh hugo/public | cut -f1)" >> $GITHUB_STEP_SUMMARY
+          echo "- Build: **Success**" >> $GITHUB_STEP_SUMMARY

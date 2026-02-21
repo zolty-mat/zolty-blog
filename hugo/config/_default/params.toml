@@ -1,0 +1,29 @@
+env = "production"
+author = "zolty"
+description = "Homelab infrastructure, Kubernetes, and self-hosting adventures"
+keywords = ["homelab", "kubernetes", "k3s", "self-hosting", "infrastructure"]
+DateFormat = "January 2, 2006"
+defaultTheme = "auto"
+ShowReadingTime = true
+ShowShareButtons = true
+ShowPostNavLinks = true
+ShowBreadCrumbs = true
+ShowCodeCopyButtons = true
+ShowToc = true
+TocOpen = false
+comments = true
+
+  [params.homeInfoParams]
+    Title = "zolty.systems"
+    Content = "Infrastructure, Kubernetes, and homelab lessons from the trenches"
+
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/zolty-mat"
+
+  [[params.socialIcons]]
+    name = "rss"
+    url = "/index.xml"
+
+  [params.assets]
+    favicon = "/favicon.ico"

@@ -1,0 +1,65 @@
+name: Deploy Blog
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'hugo/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+env:
+  S3_BUCKET: ${{ secrets.S3_BUCKET_NAME }}
+  CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+  AWS_REGION: us-east-1
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: [self-hosted, k3s, linux, amd64]
+    environment: production
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.BLOG_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.BLOG_AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.156.0'
+          extended: true
+
+      - name: Build site
+        working-directory: hugo
+        run: hugo --minify --environment production
+
+      - name: Sync HTML/XML/JSON to S3 (short cache)
+        run: |
+          aws s3 sync hugo/public/ s3://$S3_BUCKET/ \
+            --exclude "*" \
+            --include "*.html" --include "*.xml" --include "*.json" --include "*.txt" \
+            --cache-control "public, max-age=3600" \
+            --delete
+
+      - name: Sync static assets to S3 (long cache)
+        run: |
+          aws s3 sync hugo/public/ s3://$S3_BUCKET/ \
+            --exclude "*.html" --exclude "*.xml" --exclude "*.json" --exclude "*.txt" \
+            --cache-control "public, max-age=31536000, immutable" \
+            --delete
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id $CLOUDFRONT_DISTRIBUTION_ID \
+            --paths "/*"
+
+      - name: Verify deployment
+        run: |
+          echo "Deployed to https://blog.zolty.systems/"
+          echo "Pages: $(find hugo/public -name '*.html' | wc -l)"
+          echo "Total size: $(du -sh hugo/public | cut -f1)"

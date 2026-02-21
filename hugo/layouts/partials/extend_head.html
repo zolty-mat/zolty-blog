@@ -1,0 +1,24 @@
+<!-- Google AdSense -->
+{{ if eq hugo.Environment "production" }}
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+{{ end }}
+
+<!-- Additional SEO: JSON-LD Blog schema -->
+{{ if .IsHome }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "zolty.systems",
+  "url": "https://blog.zolty.systems/",
+  "description": "Homelab infrastructure, Kubernetes, and self-hosting adventures",
+  "author": {
+    "@type": "Person",
+    "name": "zolty"
+  }
+}
+</script>
+{{ end }}
+
+<!-- Google Search Console verification (uncomment and set token after registration) -->
+<!-- <meta name="google-site-verification" content="VERIFICATION_TOKEN" /> -->

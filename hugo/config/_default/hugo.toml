@@ -1,0 +1,32 @@
+baseURL = "https://blog.zolty.systems/"
+languageCode = "en-us"
+title = "zolty.systems"
+theme = "PaperMod"
+
+[build]
+  writeStats = true
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[sitemap]
+  changefreq = "weekly"
+  filename = "sitemap.xml"
+  priority = 0.5
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  series = "series"
+
+[minify]
+  disableCSS = false
+  disableHTML = false
+  disableJS = false
+  disableJSON = false
+  disableSVG = false
+  disableXML = false
+
+[services]
+  [services.googleAnalytics]
+    id = "G-XXXXXXXXXX"
