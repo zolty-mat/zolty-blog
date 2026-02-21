@@ -199,6 +199,16 @@ resource "aws_route53_record" "blog_aaaa" {
   }
 }
 
+# ── Google Search Console verification ───────────────────────────────────
+
+resource "aws_route53_record" "google_search_console" {
+  zone_id = aws_route53_zone.zolty.zone_id
+  name    = "zolty.systems"
+  type    = "TXT"
+  ttl     = 300
+  records = ["google-site-verification=rbadzUQ-CuI_TYz20uzR57AhBL2S93je1QGIC_U6Ls8"]
+}
+
 # ── ACM Certificate (must be us-east-1 for CloudFront) ──────────────────
 
 resource "aws_acm_certificate" "blog" {
