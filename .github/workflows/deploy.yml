@@ -17,7 +17,6 @@ jobs:
   deploy:
     name: Build & Deploy
     runs-on: [self-hosted, k3s, linux, amd64]
-    environment: production
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.BLOG_AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.BLOG_AWS_SECRET_ACCESS_KEY }}
@@ -36,6 +35,14 @@ jobs:
       - name: Build site
         working-directory: hugo
         run: hugo --minify --environment production
+
+      - name: Install AWS CLI
+        run: |
+          if ! command -v aws &> /dev/null; then
+            curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
+            unzip -q /tmp/awscliv2.zip -d /tmp && sudo /tmp/aws/install && rm -rf /tmp/aws /tmp/awscliv2.zip
+          fi
+          aws --version
 
       - name: Sync HTML/XML/JSON to S3 (short cache)
         run: |
