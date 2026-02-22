@@ -18,6 +18,8 @@ TocOpen: false
 
 Today I deployed two significant additions to the cluster: an AI-powered Alert Responder that uses AWS Bedrock (Amazon Nova Micro) to analyze Prometheus alerts and post remediation suggestions to Slack, and a multi-user dev workspace with per-user environments. I also hardened the cluster by constraining all workloads to the correct architecture nodes and fixing arm64 scheduling issues.
 
+![The M920q cluster nodes in their custom rack with active Noctua cooling — the hardware running the AI alert responder](m920q-rack.jpg)
+
 ## The Alert Responder
 
 Running 13+ applications on a homelab cluster means alerts fire regularly. Most are straightforward — high memory, restart loops, certificate expiry warnings — but analyzing each one, determining root cause, and knowing the right remediation command gets tedious, especially at 2 AM.
@@ -135,6 +137,8 @@ users:
 ## The arm64 Scheduling Problem
 
 Today was the day I finally fixed a recurring issue: workloads being scheduled on the arm64 node (Lima, a Mac Mini running k3s as an agent) and failing with exec format errors.
+
+![The homelab rack — compute, networking, and UPS infrastructure that the alert responder monitors](homelab-rack.jpg)
 
 The root cause: not every deployment had a `nodeSelector` or `nodeAffinity` for `kubernetes.io/arch: amd64`. When the scheduler placed a pod on the arm64 node, it would pull the amd64 image and crash immediately.
 

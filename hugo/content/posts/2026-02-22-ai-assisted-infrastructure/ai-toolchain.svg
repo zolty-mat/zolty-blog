@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <!-- Background -->
+  <rect width="800" height="420" fill="#1a1a2e" rx="8"/>
+
+  <!-- Title -->
+  <text x="400" y="36" text-anchor="middle" fill="#e6b422" font-size="16" font-weight="600">AI Toolchain Architecture</text>
+
+  <!-- GitHub Copilot Box -->
+  <rect x="40" y="60" width="200" height="130" rx="8" fill="#16213e" stroke="#e6b422" stroke-width="1.5"/>
+  <text x="140" y="88" text-anchor="middle" fill="#e6b422" font-size="14" font-weight="600">GitHub Copilot</text>
+  <text x="140" y="110" text-anchor="middle" fill="#a0a0b0" font-size="11">VS Code Inline</text>
+  <line x1="60" y1="122" x2="220" y2="122" stroke="#2a2a4a" stroke-width="1"/>
+  <text x="140" y="142" text-anchor="middle" fill="#c0c0d0" font-size="10">Terraform HCL</text>
+  <text x="140" y="158" text-anchor="middle" fill="#c0c0d0" font-size="10">Ansible YAML</text>
+  <text x="140" y="174" text-anchor="middle" fill="#c0c0d0" font-size="10">K8s Manifests</text>
+
+  <!-- Claude Opus Box -->
+  <rect x="300" y="60" width="200" height="130" rx="8" fill="#16213e" stroke="#e6b422" stroke-width="1.5"/>
+  <text x="400" y="88" text-anchor="middle" fill="#e6b422" font-size="14" font-weight="600">Claude Opus 4.6</text>
+  <text x="400" y="110" text-anchor="middle" fill="#a0a0b0" font-size="11">Claude Code CLI</text>
+  <line x1="320" y1="122" x2="480" y2="122" stroke="#2a2a4a" stroke-width="1"/>
+  <text x="400" y="142" text-anchor="middle" fill="#c0c0d0" font-size="10">Multi-file Refactoring</text>
+  <text x="400" y="158" text-anchor="middle" fill="#c0c0d0" font-size="10">Production Debugging</text>
+  <text x="400" y="174" text-anchor="middle" fill="#c0c0d0" font-size="10">Service Development</text>
+
+  <!-- AWS Bedrock Box -->
+  <rect x="560" y="60" width="200" height="130" rx="8" fill="#16213e" stroke="#e6b422" stroke-width="1.5"/>
+  <text x="660" y="88" text-anchor="middle" fill="#e6b422" font-size="14" font-weight="600">AWS Bedrock</text>
+  <text x="660" y="110" text-anchor="middle" fill="#a0a0b0" font-size="11">Runtime API</text>
+  <line x1="580" y1="122" x2="740" y2="122" stroke="#2a2a4a" stroke-width="1"/>
+  <text x="660" y="142" text-anchor="middle" fill="#c0c0d0" font-size="10">Alert Analysis (Nova Micro)</text>
+  <text x="660" y="158" text-anchor="middle" fill="#c0c0d0" font-size="10">Trade Signals (Sonnet)</text>
+  <text x="660" y="174" text-anchor="middle" fill="#c0c0d0" font-size="10">Content Generation</text>
+
+  <!-- Memory Protocol Box (center bottom) -->
+  <rect x="200" y="260" width="400" height="100" rx="8" fill="#0f3460" stroke="#e6b422" stroke-width="2"/>
+  <text x="400" y="290" text-anchor="middle" fill="#e6b422" font-size="14" font-weight="600">Memory Protocol</text>
+  <line x1="220" y1="300" x2="580" y2="300" stroke="#2a2a4a" stroke-width="1"/>
+  <text x="400" y="320" text-anchor="middle" fill="#c0c0d0" font-size="11">copilot-instructions.md  ·  ai-lessons.md  ·  platform-reference.md</text>
+  <text x="400" y="340" text-anchor="middle" fill="#a0a0b0" font-size="10">Read before work  ·  Update after discoveries  ·  Never store secrets</text>
+
+  <!-- Arrows from tools to memory protocol -->
+  <path d="M140 190 L140 230 Q140 245 155 250 L290 260" fill="none" stroke="#e6b422" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrowhead)"/>
+  <path d="M400 190 L400 260" fill="none" stroke="#e6b422" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrowhead)"/>
+  <path d="M660 190 L660 230 Q660 245 645 250 L510 260" fill="none" stroke="#e6b422" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrowhead)"/>
+
+  <!-- Labels on arrows -->
+  <text x="180" y="228" fill="#a0a0b0" font-size="9" transform="rotate(-20 180 228)">reads</text>
+  <text x="410" y="232" fill="#a0a0b0" font-size="9">reads + writes</text>
+  <text x="582" y="228" fill="#a0a0b0" font-size="9" transform="rotate(20 582 228)">system prompt</text>
+
+  <!-- Cost labels -->
+  <text x="140" y="204" text-anchor="middle" fill="#666" font-size="9">$19/mo flat</text>
+  <text x="400" y="204" text-anchor="middle" fill="#666" font-size="9">usage-based</text>
+  <text x="660" y="204" text-anchor="middle" fill="#666" font-size="9">~$0.01/mo</text>
+
+  <!-- Footer -->
+  <text x="400" y="400" text-anchor="middle" fill="#555" font-size="9">Three AI tools, one shared memory system</text>
+
+  <!-- Arrowhead marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e6b422"/>
+    </marker>
+  </defs>
+</svg>

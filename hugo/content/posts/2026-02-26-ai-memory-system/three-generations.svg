@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <rect width="800" height="400" fill="#1a1a2e" rx="8"/>
+  <text x="400" y="36" text-anchor="middle" fill="#e6b422" font-size="16" font-weight="600">Three Generations of AI Instructions</text>
+
+  <!-- Gen 1 -->
+  <rect x="40" y="60" width="220" height="280" rx="8" fill="#16213e" stroke="#666" stroke-width="1.5"/>
+  <text x="150" y="88" text-anchor="middle" fill="#888" font-size="13" font-weight="600">Generation 1</text>
+  <text x="150" y="106" text-anchor="middle" fill="#666" font-size="10">The Flat File</text>
+  <line x1="55" y1="116" x2="245" y2="116" stroke="#2a2a4a" stroke-width="1"/>
+
+  <rect x="60" y="130" width="180" height="120" rx="4" fill="#1a1a2e" stroke="#555" stroke-width="1"/>
+  <text x="70" y="148" fill="#888" font-size="9" font-family="monospace">copilot-instructions.md</text>
+  <text x="70" y="166" fill="#555" font-size="8">- project description</text>
+  <text x="70" y="180" fill="#555" font-size="8">- conventions</text>
+  <text x="70" y="194" fill="#555" font-size="8">- failure patterns</text>
+  <text x="70" y="208" fill="#555" font-size="8">- cluster state</text>
+  <text x="70" y="222" fill="#555" font-size="8">- deploy procedures</text>
+  <text x="70" y="236" fill="#e06060" font-size="8">  200+ lines, one file</text>
+
+  <text x="150" y="280" text-anchor="middle" fill="#e06060" font-size="10">Signal diluted</text>
+  <text x="150" y="296" text-anchor="middle" fill="#e06060" font-size="10">Too broad</text>
+  <text x="150" y="312" text-anchor="middle" fill="#888" font-size="9">~10 → 200+ lines</text>
+
+  <!-- Arrow 1→2 -->
+  <path d="M260 200 L290 200" fill="none" stroke="#e6b422" stroke-width="1.5" marker-end="url(#ga)"/>
+
+  <!-- Gen 2 -->
+  <rect x="290" y="60" width="220" height="280" rx="8" fill="#16213e" stroke="#e6b422" stroke-width="1.5"/>
+  <text x="400" y="88" text-anchor="middle" fill="#e6b422" font-size="13" font-weight="600">Generation 2</text>
+  <text x="400" y="106" text-anchor="middle" fill="#a0a0b0" font-size="10">Structured Split</text>
+  <line x1="305" y1="116" x2="495" y2="116" stroke="#2a2a4a" stroke-width="1"/>
+
+  <rect x="310" y="126" width="180" height="36" rx="4" fill="#1a1a2e" stroke="#e6b422" stroke-width="1"/>
+  <text x="320" y="144" fill="#e6b422" font-size="9" font-family="monospace">copilot-instructions.md</text>
+  <text x="320" y="156" fill="#a0a0b0" font-size="8">99 lines — OS + principles</text>
+
+  <rect x="310" y="172" width="180" height="36" rx="4" fill="#1a1a2e" stroke="#e6b422" stroke-width="1"/>
+  <text x="320" y="190" fill="#e6b422" font-size="9" font-family="monospace">docs/ai-lessons.md</text>
+  <text x="320" y="202" fill="#a0a0b0" font-size="8">482 lines — failure database</text>
+
+  <rect x="310" y="218" width="180" height="36" rx="4" fill="#1a1a2e" stroke="#e6b422" stroke-width="1"/>
+  <text x="320" y="236" fill="#e6b422" font-size="9" font-family="monospace">docs/platform-reference.md</text>
+  <text x="320" y="248" fill="#a0a0b0" font-size="8">Current state — IPs, versions</text>
+
+  <text x="400" y="280" text-anchor="middle" fill="#4a9e4a" font-size="10">Separated by purpose</text>
+  <text x="400" y="296" text-anchor="middle" fill="#4a9e4a" font-size="10">Each file has one job</text>
+  <text x="400" y="312" text-anchor="middle" fill="#888" font-size="9">20+ categories</text>
+
+  <!-- Arrow 2→3 -->
+  <path d="M510 200 L540 200" fill="none" stroke="#e6b422" stroke-width="1.5" marker-end="url(#ga)"/>
+
+  <!-- Gen 3 -->
+  <rect x="540" y="60" width="220" height="280" rx="8" fill="#16213e" stroke="#4a9e4a" stroke-width="2"/>
+  <text x="650" y="88" text-anchor="middle" fill="#4a9e4a" font-size="13" font-weight="600">Generation 3</text>
+  <text x="650" y="106" text-anchor="middle" fill="#a0a0b0" font-size="10">Path-Scoped Rules</text>
+  <line x1="555" y1="116" x2="745" y2="116" stroke="#2a2a4a" stroke-width="1"/>
+
+  <rect x="560" y="126" width="180" height="28" rx="3" fill="#1a1a2e" stroke="#4a9e4a" stroke-width="1"/>
+  <text x="570" y="144" fill="#4a9e4a" font-size="8" font-family="monospace">terraform.instructions.md</text>
+
+  <rect x="560" y="160" width="180" height="28" rx="3" fill="#1a1a2e" stroke="#4a9e4a" stroke-width="1"/>
+  <text x="570" y="178" fill="#4a9e4a" font-size="8" font-family="monospace">ansible.instructions.md</text>
+
+  <rect x="560" y="194" width="180" height="28" rx="3" fill="#1a1a2e" stroke="#4a9e4a" stroke-width="1"/>
+  <text x="570" y="212" fill="#4a9e4a" font-size="8" font-family="monospace">kubernetes.instructions.md</text>
+
+  <rect x="560" y="228" width="180" height="28" rx="3" fill="#1a1a2e" stroke="#4a9e4a" stroke-width="1"/>
+  <text x="570" y="246" fill="#4a9e4a" font-size="8" font-family="monospace">ci-cd.instructions.md</text>
+
+  <rect x="560" y="262" width="180" height="28" rx="3" fill="#1a1a2e" stroke="#4a9e4a" stroke-width="1"/>
+  <text x="570" y="280" fill="#4a9e4a" font-size="8" font-family="monospace">scripts.instructions.md</text>
+
+  <text x="650" y="310" text-anchor="middle" fill="#4a9e4a" font-size="10">applyTo glob patterns</text>
+  <text x="650" y="326" text-anchor="middle" fill="#a0a0b0" font-size="9">AI sees only relevant rules</text>
+
+  <!-- Footer -->
+  <text x="400" y="376" text-anchor="middle" fill="#555" font-size="9">From monolith to modular: each generation reduced noise and increased signal</text>
+
+  <defs>
+    <marker id="ga" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e6b422"/>
+    </marker>
+  </defs>
+</svg>

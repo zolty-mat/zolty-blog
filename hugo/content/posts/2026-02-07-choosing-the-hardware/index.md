@@ -16,7 +16,7 @@ TocOpen: false
 
 ## TL;DR
 
-After researching rack servers, NUCs, and mini PCs, I settled on the Lenovo ThinkCentre M920q as my homelab node of choice. At roughly $100-150 used, each unit packs an Intel 8th-gen Coffee Lake CPU, supports up to 64GB DDR4, has an NVMe slot, and sips around 15-25W. Three of these running Proxmox VE give me a proper HA cluster without the noise, heat, or power bill of traditional rack gear.
+After researching rack servers, NUCs, and mini PCs, I settled on the {{< amzn search="Lenovo ThinkCentre M920q" >}}Lenovo ThinkCentre M920q{{< /amzn >}} as my homelab node of choice. At roughly $100-150 used, each unit packs an Intel 8th-gen Coffee Lake CPU, supports up to 64GB DDR4, has an NVMe slot, and sips around 15-25W. Three of these running Proxmox VE give me a proper HA cluster without the noise, heat, or power bill of traditional rack gear.
 
 ## The Requirements
 
@@ -69,14 +69,14 @@ Each node runs Proxmox VE 8.x and hosts k3s VMs — 3 server nodes for the contr
 
 The M920q platform has a clear upgrade path:
 
-- **RAM**: Each slot takes up to 32GB SO-DIMMs, so 64GB per node is possible. I started with 32GB each which gives me plenty of headroom.
+- **RAM**: Each slot takes up to {{< amzn search="DDR4 SO-DIMM 32GB kit" >}}32GB SO-DIMMs{{< /amzn >}}, so 64GB per node is possible. I started with 32GB each which gives me plenty of headroom.
 - **Storage**: The NVMe slot handles boot + VM storage, and the 2.5" bay can add a SATA SSD for extra Longhorn capacity. I am using `additional_disks` in Terraform to manage secondary storage for Longhorn distributed volumes.
 - **Networking**: The built-in 1GbE is fine to start, but the M920q has an internal PCIe slot. I later added Mellanox ConnectX-3 10GbE NICs for inter-node traffic.
 - **GPU**: The Intel UHD 630 supports VFIO passthrough through Proxmox, which I use for Jellyfin hardware transcoding.
 
 ## Power and Thermal Considerations
 
-I measured power consumption with a Kill-A-Watt meter:
+I measured power consumption with a {{< amzn asin="B00009MDBU" >}}Kill-A-Watt meter{{< /amzn >}}:
 
 - **Single node idle**: ~15W
 - **Single node under load**: ~25W

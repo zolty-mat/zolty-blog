@@ -16,7 +16,7 @@ TocOpen: false
 
 ## TL;DR
 
-Home Assistant runs on k3s using `hostNetwork: true` for mDNS/SSDP device discovery. I implemented split DNS routing so it is accessible both externally via Traefik and internally via its host IP. Then I built a Proxmox Watchdog — a custom service that monitors all Proxmox hosts via their API and automatically power-cycles unresponsive nodes using TP-Link Kasa HS300 smart power strips.
+Home Assistant runs on k3s using `hostNetwork: true` for mDNS/SSDP device discovery. I implemented split DNS routing so it is accessible both externally via Traefik and internally via its host IP. Then I built a Proxmox Watchdog — a custom service that monitors all Proxmox hosts via their API and automatically power-cycles unresponsive nodes using {{< amzn asin="B07G95FFN3" >}}TP-Link Kasa HS300{{< /amzn >}} smart power strips.
 
 ## Home Assistant on Kubernetes
 

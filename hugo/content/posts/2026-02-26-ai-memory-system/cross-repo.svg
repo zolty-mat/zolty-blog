@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <rect width="800" height="360" fill="#1a1a2e" rx="8"/>
+  <text x="400" y="36" text-anchor="middle" fill="#e6b422" font-size="16" font-weight="600">Cross-Repository Standardization</text>
+  <text x="400" y="54" text-anchor="middle" fill="#666" font-size="10">Same template structure, project-specific content</text>
+
+  <!-- Common Template (center) -->
+  <rect x="260" y="70" width="280" height="100" rx="8" fill="#0f3460" stroke="#e6b422" stroke-width="2"/>
+  <text x="400" y="96" text-anchor="middle" fill="#e6b422" font-size="12" font-weight="600">Common Template Structure</text>
+  <line x1="275" y1="106" x2="525" y2="106" stroke="#2a2a4a" stroke-width="1"/>
+  <text x="400" y="124" text-anchor="middle" fill="#c0c0d0" font-size="10">Memory Protocol  ·  Platform Identity</text>
+  <text x="400" y="142" text-anchor="middle" fill="#c0c0d0" font-size="10">Engineering Principles  ·  Key Constraints</text>
+  <text x="400" y="158" text-anchor="middle" fill="#c0c0d0" font-size="10">Anti-Patterns  ·  Reference Lookup</text>
+
+  <!-- 5 repos radiating out -->
+  <!-- home_k3s_cluster (top center) -->
+  <rect x="300" y="200" width="200" height="50" rx="6" fill="#16213e" stroke="#e6b422" stroke-width="1.5"/>
+  <text x="400" y="222" text-anchor="middle" fill="#e6b422" font-size="11" font-weight="600">home_k3s_cluster</text>
+  <text x="400" y="238" text-anchor="middle" fill="#a0a0b0" font-size="9">99 lines · 8 anti-patterns · 5 path-scoped files</text>
+  <line x1="400" y1="170" x2="400" y2="200" stroke="#e6b422" stroke-width="1" marker-end="url(#ca)"/>
+
+  <!-- cardboard (left) -->
+  <rect x="30" y="200" width="180" height="50" rx="6" fill="#16213e" stroke="#888" stroke-width="1"/>
+  <text x="120" y="222" text-anchor="middle" fill="#c0c0d0" font-size="11" font-weight="600">cardboard</text>
+  <text x="120" y="238" text-anchor="middle" fill="#a0a0b0" font-size="9">42 lines · dual DB · selector trap</text>
+  <line x1="310" y1="170" x2="160" y2="200" stroke="#888" stroke-width="1" marker-end="url(#cg)"/>
+
+  <!-- trade_bot (far right) -->
+  <rect x="590" y="200" width="180" height="50" rx="6" fill="#16213e" stroke="#888" stroke-width="1"/>
+  <text x="680" y="222" text-anchor="middle" fill="#c0c0d0" font-size="11" font-weight="600">trade_bot</text>
+  <text x="680" y="238" text-anchor="middle" fill="#a0a0b0" font-size="9">41 lines · DRY_RUN=True · PDT rules</text>
+  <line x1="490" y1="170" x2="640" y2="200" stroke="#888" stroke-width="1" marker-end="url(#cg)"/>
+
+  <!-- digital_signage (bottom left) -->
+  <rect x="80" y="280" width="200" height="50" rx="6" fill="#16213e" stroke="#888" stroke-width="1"/>
+  <text x="180" y="302" text-anchor="middle" fill="#c0c0d0" font-size="11" font-weight="600">digital_signage</text>
+  <text x="180" y="318" text-anchor="middle" fill="#a0a0b0" font-size="9">53 lines · Angular 20 · MQTT · path routing</text>
+  <line x1="350" y1="170" x2="220" y2="280" stroke="#888" stroke-width="1" marker-end="url(#cg)"/>
+
+  <!-- zolty-blog (bottom right) -->
+  <rect x="520" y="280" width="200" height="50" rx="6" fill="#16213e" stroke="#888" stroke-width="1"/>
+  <text x="620" y="302" text-anchor="middle" fill="#c0c0d0" font-size="11" font-weight="600">zolty-blog</text>
+  <text x="620" y="318" text-anchor="middle" fill="#a0a0b0" font-size="9">82 lines · Hugo · pseudonym rules · CDN</text>
+  <line x1="450" y1="170" x2="580" y2="280" stroke="#888" stroke-width="1" marker-end="url(#cg)"/>
+
+  <defs>
+    <marker id="ca" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e6b422"/>
+    </marker>
+    <marker id="cg" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#888"/>
+    </marker>
+  </defs>
+</svg>

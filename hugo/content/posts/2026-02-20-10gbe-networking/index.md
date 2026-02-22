@@ -16,7 +16,7 @@ TocOpen: false
 
 ## TL;DR
 
-I upgraded the inter-node networking from 1GbE to 10GbE using Mellanox ConnectX-3 NICs from eBay (~$15-20 each). Two of the three NICs worked immediately. The third needed a firmware flash from 2.33.5220 to 2.42.5000 using `mstflint`, which required two cold boots to recover from a partially bricked state. All three Proxmox hosts now have 10GbE connectivity via active-backup bonds. I also deployed Security Scanner infrastructure and fixed ARC runner Pod Security Standards.
+I upgraded the inter-node networking from 1GbE to 10GbE using {{< amzn search="Mellanox ConnectX-3 MCX311A-XCAT SFP+" >}}Mellanox ConnectX-3 NICs{{< /amzn >}} from eBay (~$15-20 each). Two of the three NICs worked immediately. The third needed a firmware flash from 2.33.5220 to 2.42.5000 using `mstflint`, which required two cold boots to recover from a partially bricked state. All three Proxmox hosts now have 10GbE connectivity via active-backup bonds. I also deployed Security Scanner infrastructure and fixed ARC runner Pod Security Standards.
 
 ## Why 10GbE?
 
@@ -43,7 +43,7 @@ Mellanox ConnectX-3 NICs are the sweet spot for homelab 10GbE:
 
 The M920q has an internal PCIe slot intended for a Wi-Fi card, but it is electrically a standard x4 PCIe slot. The ConnectX-3 fits perfectly.
 
-For cabling, I use DAC (Direct Attach Copper) SFP+ cables between nodes — about $10 each for 1-meter cables. No need for SFP+ transceivers or fiber for short runs within the same rack.
+For cabling, I use {{< amzn search="DAC SFP+ cable 1m 10GbE" >}}DAC (Direct Attach Copper) SFP+ cables{{< /amzn >}} between nodes — about $10 each for 1-meter cables. No need for SFP+ transceivers or fiber for short runs within the same rack.
 
 ## Installation
 

@@ -354,6 +354,15 @@ resource "aws_iam_user_policy" "blog_ci" {
           "rekognition:GetLabelDetection"
         ]
         Resource = "*"
+      },
+      {
+        Sid    = "MarketplaceForBedrock"
+        Effect = "Allow"
+        Action = [
+          "aws-marketplace:ViewSubscriptions",
+          "aws-marketplace:Subscribe"
+        ]
+        Resource = "*"
       }
     ]
   })

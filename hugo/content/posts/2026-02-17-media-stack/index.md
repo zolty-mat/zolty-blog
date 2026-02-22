@@ -18,6 +18,8 @@ TocOpen: false
 
 The media stack is now fully automated: content gets sourced, synced from a remote seedbox to the local NAS via an rclone CronJob, organized by Radarr/Sonarr, and served by Jellyfin with Intel iGPU hardware transcoding. I also deployed a Media Controller for lifecycle management and a Media Profiler for content analysis. This post covers the full pipeline from acquisition to playback.
 
+![The homelab rack with network equipment and servers — the infrastructure powering the media pipeline](homelab-rack.jpg)
+
 ## The Media Pipeline
 
 ```
@@ -108,7 +110,9 @@ Radarr (movies) and Sonarr (TV) manage the media library:
 - Rename and organize files according to naming conventions
 - Send notifications when new content is available
 
-Both services need NFS access to the media library:
+Both services need NFS access to the media library on the {{< amzn search="Synology NAS" >}}NAS{{< /amzn >}}:
+
+![Synology NAS with active drives — all media flows through this storage server on VLAN 30](synology-nas.jpg)
 
 ```yaml
 volumes:
@@ -254,6 +258,8 @@ Custom Prometheus exporters for the seedbox and NAS provide metrics on:
 - Active transfer counts
 - Network throughput
 - rclone sync status (last run time, bytes transferred, errors)
+
+![CyberPower UPS display showing output voltage — keeping the media stack running through power events](ups-display.jpg)
 
 ## Lessons Learned
 

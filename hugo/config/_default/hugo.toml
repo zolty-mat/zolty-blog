@@ -27,6 +27,9 @@ theme = "PaperMod"
   disableSVG = false
   disableXML = false
 
+[params]
+  amazonTag = "zoltyblog07-20"
+
 [services]
   [services.googleAnalytics]
     id = "G-XXXXXXXXXX"

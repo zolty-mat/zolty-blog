@@ -29,6 +29,8 @@ GitHub-hosted runners are convenient but have limitations:
 
 Self-hosted runners solve all of these: they run inside the cluster, have direct network access to all services, pre-configured tools, and no usage limits.
 
+> **No homelab?** You can run self-hosted ARC runners on [DigitalOcean Kubernetes (DOKS)](https://www.digitalocean.com/?refcode=b9012919f7ff&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge) — a managed cluster with $200 in free credit is enough to run runners for months.
+
 ## ARC Architecture
 
 GitHub Actions Runner Controller (ARC) deploys runners as Kubernetes pods:

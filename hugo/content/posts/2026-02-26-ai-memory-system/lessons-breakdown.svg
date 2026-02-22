@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <rect width="800" height="320" fill="#1a1a2e" rx="8"/>
+  <text x="400" y="36" text-anchor="middle" fill="#e6b422" font-size="16" font-weight="600">ai-lessons.md: 482 Lines by Category</text>
+
+  <!-- Bar chart showing categories -->
+  <!-- Kubernetes: 40+ -->
+  <rect x="100" y="60" width="400" height="24" rx="3" fill="#e6b422" opacity="0.85"/>
+  <text x="90" y="77" text-anchor="end" fill="#c0c0d0" font-size="10">Kubernetes</text>
+  <text x="510" y="77" fill="#e6b422" font-size="10" font-weight="600">40+</text>
+
+  <!-- Observability: 16 -->
+  <rect x="100" y="90" width="160" height="24" rx="3" fill="#e6b422" opacity="0.7"/>
+  <text x="90" y="107" text-anchor="end" fill="#c0c0d0" font-size="10">Observability</text>
+  <text x="270" y="107" fill="#e6b422" font-size="10" font-weight="600">16</text>
+
+  <!-- Networking: 15 -->
+  <rect x="100" y="120" width="150" height="24" rx="3" fill="#e6b422" opacity="0.65"/>
+  <text x="90" y="137" text-anchor="end" fill="#c0c0d0" font-size="10">Networking</text>
+  <text x="260" y="137" fill="#e6b422" font-size="10" font-weight="600">15</text>
+
+  <!-- Alert Responder: 14 -->
+  <rect x="100" y="150" width="140" height="24" rx="3" fill="#e06060" opacity="0.7"/>
+  <text x="90" y="167" text-anchor="end" fill="#c0c0d0" font-size="10">Alert Agent</text>
+  <text x="250" y="167" fill="#e06060" font-size="10" font-weight="600">14</text>
+
+  <!-- ARC: 14 -->
+  <rect x="100" y="180" width="140" height="24" rx="3" fill="#e6b422" opacity="0.55"/>
+  <text x="90" y="197" text-anchor="end" fill="#c0c0d0" font-size="10">ARC / CI-CD</text>
+  <text x="250" y="197" fill="#e6b422" font-size="10" font-weight="600">14</text>
+
+  <!-- VLAN/etcd: 11 -->
+  <rect x="100" y="210" width="110" height="24" rx="3" fill="#e6b422" opacity="0.45"/>
+  <text x="90" y="227" text-anchor="end" fill="#c0c0d0" font-size="10">VLAN / etcd</text>
+  <text x="220" y="227" fill="#e6b422" font-size="10" font-weight="600">11</text>
+
+  <!-- Proxmox: 10+ -->
+  <rect x="100" y="240" width="100" height="24" rx="3" fill="#e6b422" opacity="0.4"/>
+  <text x="90" y="257" text-anchor="end" fill="#c0c0d0" font-size="10">Proxmox</text>
+  <text x="210" y="257" fill="#e6b422" font-size="10" font-weight="600">10+</text>
+
+  <!-- AWS/Terraform: 6 -->
+  <rect x="100" y="270" width="60" height="24" rx="3" fill="#e6b422" opacity="0.3"/>
+  <text x="90" y="287" text-anchor="end" fill="#c0c0d0" font-size="10">AWS</text>
+  <text x="170" y="287" fill="#e6b422" font-size="10" font-weight="600">6</text>
+
+  <!-- Right side: key insight -->
+  <rect x="560" y="80" width="200" height="200" rx="8" fill="#0f3460" stroke="#e6b422" stroke-width="1.5"/>
+  <text x="660" y="108" text-anchor="middle" fill="#e6b422" font-size="12" font-weight="600">Entry Format</text>
+  <line x1="575" y1="118" x2="745" y2="118" stroke="#2a2a4a" stroke-width="1"/>
+  <text x="660" y="140" text-anchor="middle" fill="#c0c0d0" font-size="10" font-weight="600">Bold symptom</text>
+  <text x="660" y="158" text-anchor="middle" fill="#a0a0b0" font-size="10">Root cause</text>
+  <text x="660" y="176" text-anchor="middle" fill="#a0a0b0" font-size="10">Why it happens</text>
+  <text x="660" y="194" text-anchor="middle" fill="#4a9e4a" font-size="10" font-weight="600">Fix: exact steps</text>
+  <line x1="575" y1="210" x2="745" y2="210" stroke="#2a2a4a" stroke-width="1"/>
+  <text x="660" y="232" text-anchor="middle" fill="#a0a0b0" font-size="9">Every entry prevents</text>
+  <text x="660" y="248" text-anchor="middle" fill="#a0a0b0" font-size="9">recurrence of a</text>
+  <text x="660" y="264" text-anchor="middle" fill="#e6b422" font-size="9">specific production failure</text>
+
+  <text x="400" y="310" text-anchor="middle" fill="#555" font-size="9">Each entry = 3 min to write, saves 30+ min per future occurrence</text>
+</svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <rect width="800" height="360" fill="#1a1a2e" rx="8"/>
+  <text x="400" y="36" text-anchor="middle" fill="#e6b422" font-size="16" font-weight="600">The Service Selector Trap</text>
+
+  <!-- WRONG side -->
+  <text x="200" y="66" text-anchor="middle" fill="#e06060" font-size="13" font-weight="600">Incorrect (50% fail)</text>
+
+  <rect x="120" y="80" width="160" height="40" rx="6" fill="#16213e" stroke="#e06060" stroke-width="1.5"/>
+  <text x="200" y="105" text-anchor="middle" fill="#c0c0d0" font-size="11">Service Selector</text>
+
+  <text x="200" y="140" text-anchor="middle" fill="#e06060" font-size="9" font-family="monospace">name: cardboard</text>
+
+  <!-- Arrows splitting -->
+  <line x1="160" y1="150" x2="110" y2="190" stroke="#e06060" stroke-width="1.5" marker-end="url(#ra)"/>
+  <line x1="240" y1="150" x2="290" y2="190" stroke="#e06060" stroke-width="1.5" marker-end="url(#ra)"/>
+  <text x="120" y="168" fill="#e06060" font-size="9">50%</text>
+  <text x="270" y="168" fill="#e06060" font-size="9">50%</text>
+
+  <!-- Flask pod (correct target) -->
+  <rect x="50" y="192" width="130" height="50" rx="6" fill="#16213e" stroke="#4a9e4a" stroke-width="1.5"/>
+  <text x="115" y="215" text-anchor="middle" fill="#4a9e4a" font-size="10" font-weight="600">Flask App</text>
+  <text x="115" y="232" text-anchor="middle" fill="#a0a0b0" font-size="8">name: cardboard</text>
+
+  <!-- Postgres pod (wrong target) -->
+  <rect x="220" y="192" width="130" height="50" rx="6" fill="#16213e" stroke="#e06060" stroke-width="1.5"/>
+  <text x="285" y="215" text-anchor="middle" fill="#e06060" font-size="10" font-weight="600">PostgreSQL</text>
+  <text x="285" y="232" text-anchor="middle" fill="#a0a0b0" font-size="8">name: cardboard</text>
+
+  <!-- Result labels -->
+  <text x="115" y="260" text-anchor="middle" fill="#4a9e4a" font-size="9">200 OK</text>
+  <text x="285" y="260" text-anchor="middle" fill="#e06060" font-size="9">502 Bad Gateway</text>
+
+  <!-- Divider -->
+  <line x1="400" y1="60" x2="400" y2="340" stroke="#2a2a4a" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- CORRECT side -->
+  <text x="600" y="66" text-anchor="middle" fill="#4a9e4a" font-size="13" font-weight="600">Correct (100% success)</text>
+
+  <rect x="520" y="80" width="160" height="40" rx="6" fill="#16213e" stroke="#4a9e4a" stroke-width="2"/>
+  <text x="600" y="105" text-anchor="middle" fill="#c0c0d0" font-size="11">Service Selector</text>
+
+  <text x="600" y="134" text-anchor="middle" fill="#4a9e4a" font-size="9" font-family="monospace">name: cardboard</text>
+  <text x="600" y="148" text-anchor="middle" fill="#4a9e4a" font-size="9" font-family="monospace">component: web</text>
+
+  <!-- Arrow only to Flask -->
+  <line x1="600" y1="155" x2="600" y2="190" stroke="#4a9e4a" stroke-width="1.5" marker-end="url(#ga2)"/>
+  <text x="615" y="178" fill="#4a9e4a" font-size="9">100%</text>
+
+  <!-- Flask pod (correct target) -->
+  <rect x="530" y="192" width="140" height="60" rx="6" fill="#16213e" stroke="#4a9e4a" stroke-width="2"/>
+  <text x="600" y="215" text-anchor="middle" fill="#4a9e4a" font-size="10" font-weight="600">Flask App</text>
+  <text x="600" y="232" text-anchor="middle" fill="#a0a0b0" font-size="8">name: cardboard</text>
+  <text x="600" y="246" text-anchor="middle" fill="#4a9e4a" font-size="8" font-weight="600">component: web</text>
+
+  <!-- Postgres pod (not matched) -->
+  <rect x="530" y="270" width="140" height="50" rx="6" fill="#16213e" stroke="#555" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="600" y="292" text-anchor="middle" fill="#888" font-size="10">PostgreSQL</text>
+  <text x="600" y="308" text-anchor="middle" fill="#666" font-size="8">component: database</text>
+
+  <text x="600" y="340" text-anchor="middle" fill="#4a9e4a" font-size="9">Not matched by selector</text>
+
+  <!-- Bottom note -->
+  <text x="200" y="300" text-anchor="middle" fill="#888" font-size="9">Both pods match the selector</text>
+  <text x="200" y="316" text-anchor="middle" fill="#e06060" font-size="9">4 incidents before guardrails</text>
+  <text x="200" y="332" text-anchor="middle" fill="#4a9e4a" font-size="9">0 after documentation</text>
+
+  <defs>
+    <marker id="ra" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#e06060"/>
+    </marker>
+    <marker id="ga2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4a9e4a"/>
+    </marker>
+  </defs>
+</svg>

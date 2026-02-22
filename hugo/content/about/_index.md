@@ -35,3 +35,9 @@ The infrastructure behind this blog and the projects discussed here runs on:
 ## Get in Touch
 
 Find me on [GitHub](https://github.com/zolty-mat) or follow the blog via [RSS](/index.xml).
+
+## Affiliate Links
+
+Some links on this site (particularly on the [Gear](/gear/) page and in hardware-related posts) are Amazon affiliate links. As an Amazon Associate, I earn from qualifying purchases. I only link to products I personally use in my homelab. See the full disclosure in the site footer.
+
+<a href="https://www.digitalocean.com/?refcode=b9012919f7ff&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge"><img src="https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%201.svg" alt="DigitalOcean Referral Badge" /></a>
