@@ -112,6 +112,8 @@ lspci -nn | grep VGA
 find /sys/kernel/iommu_groups/ -type l | grep 00:02.0
 ```
 
+{{< ad >}}
+
 ## Phase 2: VM Rebuild with Terraform
 
 Standard Proxmox VMs use the `pc-i440fx` machine type with SeaBIOS. PCIe passthrough requires the `q35` machine type with OVMF (UEFI) firmware. This is not a hot-reconfigurable setting — it requires destroying and recreating the VM.

@@ -98,6 +98,8 @@ Sidecar containers that expose *arr application metrics:
 - Library size
 - Calendar upcoming entries
 
+{{< ad >}}
+
 ## ServiceMonitors
 
 Every application in the cluster that exposes a `/metrics` endpoint gets a ServiceMonitor:

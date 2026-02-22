@@ -103,6 +103,8 @@ The `drop_params: true` setting is important. Open WebUI sends OpenAI-specific p
 
 AWS credentials come from a Kubernetes Secret mounted as environment variables -- `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` -- on a dedicated IAM user with only `bedrock:InvokeModel` and `bedrock:InvokeModelWithResponseStream` permissions.
 
+{{< ad >}}
+
 ## Open WebUI Helm Deployment
 
 Open WebUI publishes an official Helm chart. The key values:

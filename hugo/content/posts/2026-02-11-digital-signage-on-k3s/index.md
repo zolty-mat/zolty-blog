@@ -76,6 +76,8 @@ kubernetes/digital-signage/
 └── rbac.yaml
 ```
 
+{{< ad >}}
+
 ## MQTT on Kubernetes
 
 The MQTT broker (Eclipse Mosquitto) is central to the architecture — all microservices publish state changes to MQTT topics, and the Angular frontend subscribes via WebSockets. Running MQTT on Kubernetes is straightforward:

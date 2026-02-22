@@ -74,6 +74,8 @@ The migration needed to happen live — I did not want extended downtime. The pl
 6. Update DNS records
 7. Migrate NAS to VLAN 30
 
+{{< ad >}}
+
 ## What Actually Happened
 
 Steps 1-3 went smoothly. Step 4 is where things got interesting.

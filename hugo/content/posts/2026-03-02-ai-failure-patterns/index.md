@@ -108,6 +108,8 @@ This rule appears in 4 files:
 
 Four redundant entries. Since adding them: zero recurrences across 3 new applications deployed with the same pattern.
 
+{{< ad >}}
+
 ## Alert Responder Agent Failures
 
 ![Alert Responder Agent failure progression -- deployment on Day 8, 14 documented failure patterns over the following week, reliable system by Day 16 with all guardrails active](agent-progression.svg)

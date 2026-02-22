@@ -83,6 +83,8 @@ async def connect():
 
 NATS handles the pub/sub routing. Services do not need to know about each other — they just publish to and subscribe from named subjects.
 
+{{< ad >}}
+
 ## Helm Deployment and RBAC Issues
 
 I used Helm for the overall deployment. This introduced a new RBAC requirement: Helm's `--wait` flag needs to watch ReplicaSets and Events to determine if a deployment succeeded.

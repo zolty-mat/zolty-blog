@@ -99,6 +99,8 @@ With hardware transcoding enabled, the Intel UHD 630 handles:
 
 Without hardware transcoding, a single 4K HEVC stream would peg all 6 CPU cores. With the iGPU, CPU usage stays under 10% during transcoding. This is the difference between supporting 1 stream and supporting 5+ simultaneous streams.
 
+{{< ad >}}
+
 ## The *arr Suite
 
 ### Radarr and Sonarr

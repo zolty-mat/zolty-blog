@@ -91,6 +91,8 @@ and Lima. GitHub org: zolty-mat. DNS: *.k3s.internal.strommen.systems.
 7. LACP switch-before-client = NAS crash
 8. NetworkPolicy namespaceSelector vs host-network IPs
 
+{{< ad >}}
+
 ## Reference Lookup
 | What you need              | Where to find it          |
 |----------------------------|---------------------------|

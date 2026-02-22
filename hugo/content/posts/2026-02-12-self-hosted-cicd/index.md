@@ -88,6 +88,8 @@ spec:
         - amd64
 ```
 
+{{< ad >}}
+
 ## The Labels Gotcha
 
 This is the first thing that bit me. The `labels` field in ARC's RunnerDeployment **replaces** all default labels entirely. If you specify:
