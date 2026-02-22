@@ -327,29 +327,60 @@ For external users (web browser), OAuth2 Proxy handles everything. The gateway t
 
 ## The Gotchas
 
-Six issues discovered during deployment, in order of debugging time:
+Seven issues discovered during deployment, in order of debugging time:
 
-### 1. `gateway.bind` Only Accepts Keywords
+### 1. Device Pairing Blocks Control UI Behind Reverse Proxy
+
+This was the most time-consuming issue. OpenClaw has a **device pairing** system that is completely separate from token or password authentication. Every new browser or client that connects is treated as a new "device" with a unique keypair. On loopback connections, pairing is auto-approved silently. On remote connections -- which is what Traefik forwards look like even with `trustedProxies` configured -- the device must be explicitly approved via CLI.
+
+The symptom is maddening: the Control UI loads, the token is accepted, but the WebSocket connection fails with `disconnected (1008): pairing required`. The gateway logs show `pairing required` -- not `token_missing` or `unauthorized`. The auth is fine. The pairing is not.
+
+The fix has two parts. First, approve existing pending devices:
+
+```bash
+# List pending devices
+kubectl exec deploy/openclaw -- openclaw devices list
+
+# Approve the pending request
+kubectl exec deploy/openclaw -- openclaw devices approve <request-id>
+```
+
+Second, disable per-device pairing for the Control UI since OAuth2 Proxy already authenticates users:
+
+```json
+{
+  "gateway": {
+    "controlUi": {
+      "enabled": true,
+      "dangerouslyDisableDeviceAuth": true
+    }
+  }
+}
+```
+
+The `dangerouslyDisableDeviceAuth` flag tells the gateway to skip device pairing when token auth is already configured. The name is intentionally scary -- it disables a genuine security layer. But when you already have OAuth2 Proxy plus a gateway token, per-device pairing is the third layer and adds operational friction without meaningful security benefit for a household deployment.
+
+### 2. `gateway.bind` Only Accepts Keywords
 
 The first instinct when binding to all interfaces is to set `gateway.bind: "0.0.0.0"`. This fails. OpenClaw's bind parameter only accepts keywords: `loopback`, `lan`, `tailnet`, `auto`, or `custom`. The correct value for Kubernetes is `lan`, which internally resolves to `0.0.0.0`. Setting a raw IP address causes a configuration validation error at startup.
 
-### 2. `--bind lan` Requires Authentication
+### 3. `--bind lan` Requires Authentication
 
 Binding to `lan` without setting either `OPENCLAW_GATEWAY_TOKEN` or a gateway password causes the process to exit with an error. This is intentional -- OpenClaw refuses to listen on a network interface without authentication. The error message is clear, but if you are iterating on the deployment and have not set up secrets yet, this blocks progress.
 
-### 3. No Published Docker Image
+### 4. No Published Docker Image
 
 Unlike most modern web applications, OpenClaw does not publish container images to Docker Hub or GHCR. The only distribution channel is npm. You must build your own Docker image, which means maintaining a Dockerfile and a CI pipeline for image builds. This is not hard, but it is unexpected.
 
-### 4. Encrypted Longhorn PVCs Have CSI Staging Failures
+### 5. Encrypted Longhorn PVCs Have CSI Staging Failures
 
 Encrypted Longhorn PVCs (`storageClassName: longhorn-encrypted`) intermittently fail to mount after node reboots. The CSI driver reports that the staging path does not exist. The volume stays in `ContainerCreating` indefinitely. Switching to the standard `longhorn` StorageClass resolved the issue. This is a known Longhorn issue, not specific to OpenClaw.
 
-### 5. Native Compilation Dependencies
+### 6. Native Compilation Dependencies
 
 The `npm install` step fails without `python3`, `make`, `g++`, and `libopus-dev`. These are build dependencies for `@discordjs/opus`, which uses node-gyp to compile a native C++ binding. The error output from node-gyp is verbose but not immediately helpful if you are not familiar with native Node.js modules. The fix is simple -- install the build tools in the Dockerfile before running `npm install`.
 
-### 6. Config File Must Be Writable
+### 7. Config File Must Be Writable
 
 OpenClaw modifies its configuration file at runtime whenever you change settings via the built-in Control UI. Kubernetes ConfigMap mounts are read-only. If the config file is on a ConfigMap mount, any attempt to save settings from the Control UI fails silently. The init container pattern -- copy config from ConfigMap to PVC on startup -- solves this while keeping the ConfigMap as the source of truth.
 

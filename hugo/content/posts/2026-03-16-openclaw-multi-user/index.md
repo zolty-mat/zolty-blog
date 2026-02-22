@@ -89,6 +89,16 @@ OAuth2 Proxy handles external access control, but OpenClaw also requires a `OPEN
 
 The token is stored in a Kubernetes Secret and mounted as an environment variable. External users never see it -- OAuth2 Proxy injects the necessary headers automatically.
 
+### Inviting New Users
+
+Adding a new user is a three-step process:
+
+1. **Add their Google email** to the OAuth2 Proxy email whitelist (`kubectl edit configmap oauth2-proxy-config -n public-ingress` → add email → `kubectl rollout restart deploy/oauth2-proxy`)
+2. **Share the gateway token** with them out-of-band (verbally, Signal, etc.)
+3. **They navigate to the URL**, authenticate with Google, enter the token in the Control UI, and they are connected
+
+With `dangerouslyDisableDeviceAuth: true` in the gateway config, new users do not need any additional per-device approval. Without this setting, each new browser would generate a pending "device pairing request" that requires manual CLI approval via `openclaw devices approve <request-id>` -- impractical for a household deployment where the admin is not always at a terminal.
+
 ### User Identity Flow
 
 The full identity chain works like this:
