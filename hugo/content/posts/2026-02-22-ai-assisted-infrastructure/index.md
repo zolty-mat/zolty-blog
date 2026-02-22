@@ -18,7 +18,7 @@ TocOpen: false
 
 Two weeks of building a production Kubernetes cluster with AI pair programming. Claude Opus 4.6 handles complex multi-step infrastructure work via the CLI. GitHub Copilot provides inline code completion in VS Code. AWS Bedrock (Nova Micro, Claude Sonnet 4.5) powers runtime AI services inside the cluster. The key discovery: AI tools without persistent memory are dangerous. Every session starts from zero. The same bugs get recreated, the same anti-patterns get suggested, the same cluster-specific constraints get forgotten. The solution is the "Memory Protocol" -- a set of documentation files the AI reads before every session and updates after every discovery.
 
-![Two Lenovo ThinkCentre M920q mini PCs mounted in a custom rack with Noctua cooling fans -- two of the eight nodes in the k3s cluster that AI tools help build and operate](cluster-nodes.jpg)
+![Two Lenovo ThinkCentre M920q mini PCs mounted in a custom rack with Noctua cooling fans -- two of the eight nodes in the k3s cluster that AI tools help build and operate](https://blog.zolty.systems/media/images/blog/2026-02-22-ai-assisted-infrastructure/cluster-nodes.jpg)
 
 ## The AI Toolchain
 

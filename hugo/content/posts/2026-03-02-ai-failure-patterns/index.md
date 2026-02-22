@@ -18,7 +18,7 @@ TocOpen: false
 
 AI tools have caused multiple production incidents in this cluster. The AI alert responder agent alone generated 14 documented failure patterns before it became reliable. A security scanner deployed by AI applied `restricted` PodSecurity labels to every namespace, silently blocking pod creation for half the applications in the cluster. The service selector trap -- where AI routes 50% of requests to PostgreSQL instead of the application -- appeared in 4 separate incidents before guardrails stopped it. This post catalogs the failure patterns, the five-layer guardrail architecture built to prevent them, and an honest assessment of what still goes wrong.
 
-![The homelab rack -- wooden frame with network switches, patch panel, mini PCs, and UPS that AI tools manage and have occasionally broken](homelab-rack.jpg)
+![The homelab rack -- wooden frame with network switches, patch panel, mini PCs, and UPS that AI tools manage and have occasionally broken](https://blog.zolty.systems/media/images/blog/2026-03-02-ai-failure-patterns/homelab-rack.jpg)
 
 ## The Service Selector Trap: Anatomy of the #1 AI Bug
 

@@ -18,7 +18,7 @@ TocOpen: false
 
 Today was the biggest infrastructure day yet. I migrated the entire k3s cluster from a flat network to a proper VLAN architecture: Server VLAN 20 for k3s nodes and services, Storage VLAN 30 for the NAS, and the existing default VLAN 1 for clients. This involved changing IPs on all VMs, updating MetalLB, reconfiguring Traefik, and recovering from an etcd quorum loss when I moved too many nodes at once. I also deployed the media stack (Jellyfin, Radarr, Sonarr, Prowlarr, Jellyseerr) and configured Intel iGPU passthrough infrastructure.
 
-![Network switch mounted on the wooden rack shelf — the brains behind all the VLAN routing](network-switch.jpg)
+![Network switch mounted on the wooden rack shelf — the brains behind all the VLAN routing](https://blog.zolty.systems/media/images/blog/2026-02-16-vlan-migration/network-switch.jpg)
 
 ## The Network Before
 
@@ -149,7 +149,7 @@ Every LoadBalancer service got a new external IP. I updated DNS records for all 
 
 The NAS was moved to VLAN 30 (Storage). This required configuring the switch ports connected to the NAS as access ports on VLAN 30, and setting up inter-VLAN routing rules:
 
-![Synology NAS sitting atop rack-mounted equipment with blue status LEDs indicating active drives](nas-rack.jpg)
+![Synology NAS sitting atop rack-mounted equipment with blue status LEDs indicating active drives](https://blog.zolty.systems/media/images/blog/2026-02-16-vlan-migration/nas-rack.jpg)
 
 - VLAN 20 (k3s) → VLAN 30 (NAS): Allow NFS/SMB traffic
 - VLAN 1 (clients) → VLAN 30 (NAS): Allow SMB for media access
@@ -206,7 +206,7 @@ sudo ufw allow from 192.168.20.0/24 to any port 10250
 
 Ansible handled this across all nodes.
 
-![Patch panel with color-coded ethernet cables — each color maps to a different VLAN](patch-panel.jpg)
+![Patch panel with color-coded ethernet cables — each color maps to a different VLAN](https://blog.zolty.systems/media/images/blog/2026-02-16-vlan-migration/patch-panel.jpg)
 
 ## Lessons Learned
 

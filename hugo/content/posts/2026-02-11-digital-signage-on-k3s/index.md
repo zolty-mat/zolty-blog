@@ -22,7 +22,7 @@ Today I migrated Digital Signage — an Angular SPA backed by 7 Flask microservi
 
 Digital Signage started as a side project back in May 2025, designed to drive informational displays on {{< amzn search="Raspberry Pi 4" >}}Raspberry Pi{{< /amzn >}} kiosk devices. It evolved over the months into a surprisingly complex system:
 
-![The homelab rack powering the digital signage backend — network equipment, compute nodes, and 3D printed fixtures](homelab-rack.jpg)
+![The homelab rack powering the digital signage backend — network equipment, compute nodes, and 3D printed fixtures](https://blog.zolty.systems/media/images/blog/2026-02-11-digital-signage-on-k3s/homelab-rack.jpg)
 
 **Frontend:**
 - Angular SPA with real-time data updates
@@ -212,7 +212,7 @@ Total build time: about 4 minutes for all 8 images plus deployment. Not bad for 
 
 The actual {{< amzn search="Raspberry Pi 4" >}}Raspberry Pi{{< /amzn >}} displays connect to the Angular SPA and receive updates in real-time via MQTT WebSockets. The architecture works well for a kiosk use case:
 
-![3D printed enclosures with hexagonal mesh ventilation, designed to house the cluster nodes](3d-printed-cases.jpg)
+![3D printed enclosures with hexagonal mesh ventilation, designed to house the cluster nodes](https://blog.zolty.systems/media/images/blog/2026-02-11-digital-signage-on-k3s/3d-printed-cases.jpg)
 
 1. Display loads the Angular app from `signage.zolty.systems`
 2. App connects to MQTT broker via WebSocket

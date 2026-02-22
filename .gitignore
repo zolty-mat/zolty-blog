@@ -32,6 +32,11 @@ terraform/*.tfstate.backup
 terraform/crash.log
 terraform/tfplan
 
+# Blog post images (served from S3/CloudFront)
+hugo/content/posts/**/*.jpg
+hugo/content/posts/**/*.jpeg
+hugo/content/posts/**/*.png
+
 # Environment / secrets
 .env
 .env.*
