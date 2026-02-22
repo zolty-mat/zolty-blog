@@ -3,12 +3,13 @@ title: "Benchmarking Every Subsystem: NVMe, CPU, Memory, and 10GbE on Four Proxm
 date: 2026-02-22T12:00:00-06:00
 draft: false
 author: "zolty"
-description: "A Longhorn volume corruption incident triggered a full hardware audit — SMART health checks, fio disk benchmarks, sysbench CPU and memory tests, and iperf3 network throughput across all four Proxmox hosts."
-tags: ["benchmarks", "hardware", "nvme", "proxmox", "homelab", "performance", "longhorn", "10gbe"]
+description: "Full hardware benchmark results for four Lenovo M920q Proxmox hosts — NVMe SMART health, fio disk IOPS, sysbench CPU and memory bandwidth, iperf3 10GbE throughput, and the dramatic thermal impact of custom 3D-printed cooling."
+tags: ["benchmarks", "hardware", "nvme", "proxmox", "homelab", "performance", "longhorn", "10gbe", "m920q", "noctua", "cooling", "mellanox"]
 categories: ["Infrastructure"]
+keywords: ["M920q benchmark", "Proxmox NVMe benchmark", "homelab 10GbE", "Longhorn volume corruption", "Noctua cooling M920q", "fio benchmark results", "sysbench i5-8500T vs i7-8700T", "OEM NVMe SSD performance"]
 cover:
   image: "/images/covers/infrastructure.svg"
-  alt: "Cluster hardware benchmarks"
+  alt: "Benchmarking every subsystem on four Lenovo M920q Proxmox hosts — NVMe, CPU, memory, and 10GbE network"
   hidden: false
 ShowToc: true
 TocOpen: false

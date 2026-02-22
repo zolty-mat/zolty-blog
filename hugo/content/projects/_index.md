@@ -21,7 +21,7 @@ The foundation that everything else runs on. A 3-node Proxmox VE cluster hosting
 - cert-manager with Let's Encrypt DNS-01 validation via Route53
 - Full observability: Prometheus + Grafana + Loki + AlertManager
 
-**Blog posts:** [Choosing the Hardware](/posts/2026-02-07-choosing-the-hardware/) · [Cluster Genesis](/posts/2026-02-08-cluster-genesis/) · [Self-Hosted CI/CD](/posts/2026-02-12-self-hosted-cicd/) · [VLAN Migration](/posts/2026-02-16-vlan-migration/) · [GPU Passthrough](/posts/2026-02-18-gpu-passthrough/) · [Monitoring Everything](/posts/2026-02-19-monitoring-everything/) · [10GbE Networking](/posts/2026-02-20-10gbe-networking/)
+**Blog posts:** [One Month Retrospective](/posts/2026-03-10-one-month-retrospective/) · [Choosing the Hardware](/posts/2026-02-07-choosing-the-hardware/) · [Cluster Genesis](/posts/2026-02-08-cluster-genesis/) · [Self-Hosted CI/CD](/posts/2026-02-12-self-hosted-cicd/) · [VLAN Migration](/posts/2026-02-16-vlan-migration/) · [GPU Passthrough](/posts/2026-02-18-gpu-passthrough/) · [Monitoring Everything](/posts/2026-02-19-monitoring-everything/) · [10GbE Networking](/posts/2026-02-20-10gbe-networking/)
 
 [GitHub](https://github.com/zolty-mat/home_k3s_cluster)
 
@@ -89,7 +89,25 @@ A trading card game price tracker that monitors card prices across 10 major TCGs
 - Dual database backend — PostgreSQL in production, SQLite for local development
 - Rate limiting with jitter to avoid detection
 
+**Blog post:** [Cardboard Price Tracker](/posts/2026-03-12-cardboard-price-tracker/)
+
 [GitHub](https://github.com/zolty-mat/cardboard)
+
+---
+
+## AI Chat Gateway (OpenClaw)
+
+A self-hosted AI assistant gateway that replaced Open WebUI on the cluster. Provides a WebSocket-based chat interface with multi-channel support (web, Telegram, Discord, WhatsApp), dual model providers (Anthropic direct API + AWS Bedrock via LiteLLM), and per-user cost tracking. Privacy-first design -- the admin cannot read other users' conversations.
+
+**Stack:** Node.js / OpenClaw / Anthropic API / LiteLLM / AWS Bedrock / Prometheus + Grafana
+
+- Custom Docker image from `node:22-bookworm-slim` with native compilation deps for Discord support
+- Dual model providers: Anthropic direct API (primary, lower latency) with LiteLLM/Bedrock fallback
+- Multi-user with per-sender session isolation and 120-minute idle timeout
+- Per-user cost tracking via LiteLLM Prometheus metrics and Grafana dashboards
+- OAuth2 Proxy authentication with Google email whitelist for family access
+
+**Blog posts:** [OpenClaw on k3s](/posts/2026-03-14-openclaw-on-k3s/) · [Multi-User and Privacy](/posts/2026-03-16-openclaw-multi-user/) · [Open WebUI (predecessor)](/posts/2026-03-04-private-ai-chat/)
 
 ---
 
