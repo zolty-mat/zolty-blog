@@ -5,11 +5,17 @@ import json
 import os
 import re
 import boto3
+import urllib.request
+import urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 
 BEDROCK_MODEL_ID = "anthropic.claude-3-5-sonnet-20241022-v2:0"
 BEDROCK_REGION = "us-east-1"
+MEDIA_LIBRARY_URL = os.environ.get(
+    "MEDIA_LIBRARY_URL",
+    "https://media-library.k3s.internal.strommen.systems"
+)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 HUGO_CONTENT = REPO_ROOT / "hugo" / "content" / "posts"
@@ -20,15 +26,62 @@ def load_system_prompt() -> str:
     return (PROMPTS_DIR / "article-system.txt").read_text()
 
 
+def query_media_library(tags: list[str], limit: int = 5) -> list[dict]:
+    """Query the media library API for images matching the topic tags."""
+    try:
+        params = f"tags={','.join(tags)}&type=image&limit={limit}"
+        url = f"{MEDIA_LIBRARY_URL}/api/search?{params}"
+        req = urllib.request.Request(url, headers={"Accept": "application/json"})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            return json.loads(resp.read())
+    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+        print(f"Media library query failed (non-fatal): {e}")
+        return []
+
+
+def format_media_context(media_items: list[dict]) -> str:
+    """Format media items into context for the article prompt."""
+    if not media_items:
+        return ""
+
+    lines = [
+        "",
+        "Available images from the media library (use Hugo figure shortcodes to embed relevant ones):"
+    ]
+    for item in media_items:
+        cdn_url = item.get("cdn_url", "")
+        alt = item.get("alt_text", item.get("filename", ""))
+        desc = item.get("ai_description", "")
+        tags = ", ".join(item.get("user_tags", []))
+        lines.append(f'- {{{{< figure src="{cdn_url}" alt="{alt}" caption="{desc[:100]}" >}}}}')
+        lines.append(f"  Tags: {tags}")
+    lines.append("")
+    lines.append("Only include images that are directly relevant to the article topic. Do not include all of them.")
+    return "\n".join(lines)
+
+
+def extract_topic_tags(topic: str) -> list[str]:
+    """Extract likely search tags from a topic string."""
+    stop_words = {"a", "an", "the", "and", "or", "for", "on", "in", "to", "with", "how", "why", "my", "i"}
+    words = re.sub(r"[^a-z0-9\s-]", "", topic.lower()).split()
+    return [w for w in words if w not in stop_words and len(w) > 2][:5]
+
+
 def generate_article(topic: str, notes: str = "") -> str:
     client = boto3.client("bedrock-runtime", region_name=BEDROCK_REGION)
 
     system_prompt = load_system_prompt()
+
+    # Query media library for relevant images
+    tags = extract_topic_tags(topic)
+    media_items = query_media_library(tags)
+    media_context = format_media_context(media_items)
+
     user_prompt = f"""Write a comprehensive blog article about: {topic}
 
 Additional context and key points to cover:
 {notes if notes else 'None provided -- use your best judgment based on the infrastructure context.'}
-
+{media_context}
 Output the article as a complete Hugo page bundle index.md file with YAML front matter.
 Do not wrap the output in markdown code fences -- output the raw file content directly."""
 
