@@ -7,9 +7,9 @@ description: "Taking an Angular SPA and 7 Flask microservices from local develop
 tags: ["kubernetes", "angular", "flask", "microservices", "mqtt", "homelab"]
 categories: ["Applications"]
 cover:
-  image: ""
+  image: "/images/covers/applications.svg"
   alt: "Digital Signage deployment"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---

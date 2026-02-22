@@ -7,9 +7,9 @@ description: "Deploying Home Assistant on k3s with hostNetwork and split routing
 tags: ["home-assistant", "kubernetes", "proxmox", "monitoring", "automation", "homelab"]
 categories: ["Applications"]
 cover:
-  image: ""
+  image: "/images/covers/applications.svg"
   alt: "Home Assistant and Proxmox monitoring"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---

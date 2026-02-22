@@ -7,9 +7,9 @@ description: "From bare Proxmox hosts to a fully operational k3s HA cluster in a
 tags: ["k3s", "terraform", "ansible", "kubernetes", "proxmox", "homelab"]
 categories: ["Infrastructure"]
 cover:
-  image: ""
+  image: "/images/covers/infrastructure.svg"
   alt: "Cluster bootstrapping"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---

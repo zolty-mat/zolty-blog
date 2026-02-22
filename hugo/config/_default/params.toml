@@ -13,9 +13,24 @@ ShowToc = true
 TocOpen = false
 comments = true
 
-  [params.homeInfoParams]
-    Title = "zolty.systems"
-    Content = "Infrastructure, Kubernetes, and homelab lessons from the trenches"
+  [params.profileMode]
+    enabled = true
+    title = "zolty.systems"
+    subtitle = "$ kubectl get nodes -o wide  # Homelab infrastructure, Kubernetes, and self-hosting adventures"
+    imageUrl = ""
+    imageTitle = ""
+
+    [[params.profileMode.buttons]]
+      name = "Blog"
+      url = "/posts/"
+
+    [[params.profileMode.buttons]]
+      name = "Projects"
+      url = "/projects/"
+
+    [[params.profileMode.buttons]]
+      name = "About"
+      url = "/about/"
 
   [[params.socialIcons]]
     name = "github"
@@ -27,3 +42,9 @@ comments = true
 
   [params.assets]
     favicon = "/favicon.ico"
+    favicon16x16 = "/favicon-16x16.png"
+    favicon32x32 = "/favicon-32x32.png"
+    apple_touch_icon = "/apple-touch-icon.png"
+    safari_pinned_tab = "/safari-pinned-tab.svg"
+    theme_color = "#1d1e20"
+    msapplication_TileColor = "#e6b422"

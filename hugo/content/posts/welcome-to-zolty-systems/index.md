@@ -7,9 +7,9 @@ description: "Introducing zolty.systems -- a blog about homelab infrastructure, 
 tags: ["homelab", "kubernetes", "meta"]
 categories: ["meta"]
 cover:
-  image: ""
-  alt: ""
-  caption: ""
+  image: "/images/covers/infrastructure.svg"
+  alt: "zolty.systems blog"
+  hidden: false
 ShowToc: true
 TocOpen: true
 ---

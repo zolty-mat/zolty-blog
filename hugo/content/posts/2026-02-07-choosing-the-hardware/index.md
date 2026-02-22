@@ -7,9 +7,9 @@ description: "How I chose the Lenovo ThinkCentre M920q as the foundation for a p
 tags: ["homelab", "hardware", "proxmox", "lenovo", "m920q"]
 categories: ["Infrastructure"]
 cover:
-  image: ""
+  image: "/images/covers/infrastructure.svg"
   alt: "Homelab hardware selection"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---

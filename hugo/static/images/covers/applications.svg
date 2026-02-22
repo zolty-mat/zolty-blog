@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#1d1e20"/>
+  <rect y="626" width="1200" height="4" fill="#e6b422"/>
+  <!-- App grid icon -->
+  <g transform="translate(460,120)" stroke="#e6b422" fill="none" stroke-width="4">
+    <rect x="0" y="0" width="120" height="120" rx="16"/>
+    <rect x="160" y="0" width="120" height="120" rx="16"/>
+    <rect x="0" y="160" width="120" height="120" rx="16"/>
+    <rect x="160" y="160" width="120" height="120" rx="16"/>
+    <!-- Icons inside -->
+    <circle cx="60" cy="60" r="25"/>
+    <polygon points="220,30 245,90 195,90" fill="#e6b422" stroke="none"/>
+    <rect x="30" y="195" width="60" height="50" rx="6" fill="#e6b422" stroke="none" opacity="0.3"/>
+    <line x1="190" y1="220" x2="250" y2="220" stroke-width="6"/>
+    <line x1="220" y1="190" x2="220" y2="250" stroke-width="6"/>
+  </g>
+  <text x="600" y="500" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-size="36" font-weight="700" fill="#e6b422">APPLICATIONS</text>
+  <text x="600" y="545" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-size="18" fill="#888" font-weight="400">zolty.systems</text>
+</svg>

@@ -7,9 +7,9 @@ description: "Deploying Jellyfin with GPU transcoding, the *arr suite, automated
 tags: ["jellyfin", "media", "kubernetes", "rclone", "gpu", "homelab"]
 categories: ["Applications"]
 cover:
-  image: ""
+  image: "/images/covers/applications.svg"
   alt: "Media stack on Kubernetes"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---

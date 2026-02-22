@@ -7,9 +7,9 @@ description: "How I built an AI alert responder that analyzes Prometheus alerts 
 tags: ["aws-bedrock", "ai", "monitoring", "slack", "prometheus", "homelab"]
 categories: ["Applications"]
 cover:
-  image: ""
+  image: "/images/covers/applications.svg"
   alt: "AI-powered alert analysis"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---

@@ -7,9 +7,9 @@ description: "A comprehensive look at the monitoring stack powering the homelab:
 tags: ["prometheus", "grafana", "loki", "monitoring", "kubernetes", "homelab"]
 categories: ["Operations"]
 cover:
-  image: ""
+  image: "/images/covers/operations.svg"
   alt: "Monitoring stack"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---

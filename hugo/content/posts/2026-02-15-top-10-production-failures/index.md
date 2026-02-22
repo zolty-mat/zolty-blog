@@ -7,9 +7,9 @@ description: "One week into running a homelab k3s cluster in production, here ar
 tags: ["kubernetes", "lessons-learned", "debugging", "production", "homelab"]
 categories: ["Operations"]
 cover:
-  image: ""
+  image: "/images/covers/operations.svg"
   alt: "Production failures and lessons"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---

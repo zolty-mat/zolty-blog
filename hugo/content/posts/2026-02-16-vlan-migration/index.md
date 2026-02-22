@@ -7,9 +7,9 @@ description: "How I migrated all k3s nodes, MetalLB pool, and load balancer IPs 
 tags: ["networking", "vlan", "kubernetes", "etcd", "homelab"]
 categories: ["Infrastructure"]
 cover:
-  image: ""
+  image: "/images/covers/infrastructure.svg"
   alt: "VLAN migration"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---

@@ -7,9 +7,9 @@ description: "Day two of the cluster build: deploying Cardboard (TCG price track
 tags: ["kubernetes", "k3s", "deployment", "postgresql", "monitoring", "homelab"]
 categories: ["Applications"]
 cover:
-  image: ""
+  image: "/images/covers/applications.svg"
   alt: "First application deployments"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---

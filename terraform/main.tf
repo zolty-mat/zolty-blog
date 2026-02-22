@@ -55,6 +55,27 @@ resource "aws_s3_bucket_policy" "blog" {
   })
 }
 
+# ── CloudFront Function (URL rewrite for S3 directory indexes) ─────────
+
+resource "aws_cloudfront_function" "url_rewrite" {
+  name    = "zolty-blog-url-rewrite"
+  runtime = "cloudfront-js-2.0"
+  comment = "Rewrite directory paths to index.html for S3 static hosting"
+  publish = true
+  code    = <<-EOF
+    function handler(event) {
+      var request = event.request;
+      var uri = request.uri;
+      if (uri.endsWith('/')) {
+        request.uri += 'index.html';
+      } else if (!uri.includes('.')) {
+        request.uri += '/index.html';
+      }
+      return request;
+    }
+  EOF
+}
+
 # ── CloudFront Distribution ─────────────────────────────────────────────
 
 resource "aws_cloudfront_origin_access_control" "blog" {
@@ -90,6 +111,11 @@ resource "aws_cloudfront_distribution" "blog" {
     cache_policy_id = "658327ea-f89d-4fab-a63d-7e88639e58f6" # CachingOptimized
 
     response_headers_policy_id = aws_cloudfront_response_headers_policy.security.id
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.url_rewrite.arn
+    }
   }
 
   custom_error_response {
@@ -314,6 +340,18 @@ resource "aws_iam_user_policy" "blog_ci" {
         Action = [
           "bedrock:ListFoundationModels",
           "bedrock:GetFoundationModel"
+        ]
+        Resource = "*"
+      },
+      {
+        Sid    = "RekognitionAnalyze"
+        Effect = "Allow"
+        Action = [
+          "rekognition:DetectLabels",
+          "rekognition:DetectModerationLabels",
+          "rekognition:DetectText",
+          "rekognition:StartLabelDetection",
+          "rekognition:GetLabelDetection"
         ]
         Resource = "*"
       }

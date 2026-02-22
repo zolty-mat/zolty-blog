@@ -7,9 +7,9 @@ description: "Lessons from deploying a Vue.js frontend with 7 FastAPI backend se
 tags: ["kubernetes", "microservices", "fastapi", "nats", "homelab"]
 categories: ["Applications"]
 cover:
-  image: ""
+  image: "/images/covers/applications.svg"
   alt: "Microservices architecture"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---

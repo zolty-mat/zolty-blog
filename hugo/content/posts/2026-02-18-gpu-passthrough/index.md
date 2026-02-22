@@ -7,9 +7,9 @@ description: "A complete guide to passing through Intel UHD 630 iGPU from Proxmo
 tags: ["gpu", "proxmox", "transcoding", "jellyfin", "iommu", "homelab"]
 categories: ["Infrastructure"]
 cover:
-  image: ""
+  image: "/images/covers/infrastructure.svg"
   alt: "GPU passthrough"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---

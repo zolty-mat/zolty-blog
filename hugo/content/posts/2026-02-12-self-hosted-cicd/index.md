@@ -7,9 +7,9 @@ description: "A deep dive into GitHub Actions Runner Controller (ARC) on k3s —
 tags: ["github-actions", "cicd", "kubernetes", "arc", "homelab"]
 categories: ["Infrastructure"]
 cover:
-  image: ""
+  image: "/images/covers/infrastructure.svg"
   alt: "Self-hosted CI/CD"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---

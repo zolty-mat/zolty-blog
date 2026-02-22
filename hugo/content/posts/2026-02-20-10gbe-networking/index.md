@@ -7,9 +7,9 @@ description: "Upgrading the homelab to 10GbE with used Mellanox ConnectX-3 NICs 
 tags: ["networking", "10gbe", "mellanox", "firmware", "homelab"]
 categories: ["Infrastructure"]
 cover:
-  image: ""
+  image: "/images/covers/infrastructure.svg"
   alt: "10GbE networking upgrade"
-  hidden: true
+  hidden: false
 ShowToc: true
 TocOpen: false
 ---
