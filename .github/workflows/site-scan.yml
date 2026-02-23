@@ -1,0 +1,294 @@
+name: Site Scan
+
+on:
+  # Run automatically after every successful deploy to main
+  workflow_run:
+    workflows: ["Deploy Blog"]
+    types: [completed]
+    branches: [main]
+
+  # Manual trigger — useful for scanning before a deploy or against staging
+  workflow_dispatch:
+    inputs:
+      site_url:
+        description: 'Target URL to scan (default: https://blog.zolty.systems)'
+        required: false
+        default: 'https://blog.zolty.systems'
+      skip_visual:
+        description: 'Skip visual regression tests (use when no baselines exist yet)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────
+  # Gate: only run when the deploy succeeded (for workflow_run trigger)
+  # ─────────────────────────────────────────────────────────────────────────
+  check-trigger:
+    name: Check trigger status
+    runs-on: [self-hosted, k3s, linux, amd64]
+    outputs:
+      should_run: ${{ steps.gate.outputs.should_run }}
+      site_url: ${{ steps.gate.outputs.site_url }}
+    steps:
+      - name: Evaluate run conditions
+        id: gate
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
+            CONCLUSION="${{ github.event.workflow_run.conclusion }}"
+            echo "Deploy workflow conclusion: $CONCLUSION"
+            if [[ "$CONCLUSION" != "success" ]]; then
+              echo "Deploy did not succeed — skipping site scan"
+              echo "should_run=false" >> $GITHUB_OUTPUT
+            else
+              echo "should_run=true" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          fi
+
+          # Resolve target URL
+          SITE_URL="${{ github.event.inputs.site_url || 'https://blog.zolty.systems' }}"
+          echo "site_url=$SITE_URL" >> $GITHUB_OUTPUT
+          echo "Scan target: $SITE_URL"
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Job 1: Playwright — visual regression + broken links + security headers
+  # ─────────────────────────────────────────────────────────────────────────
+  playwright:
+    name: Playwright (visual · links · security headers)
+    needs: check-trigger
+    if: needs.check-trigger.outputs.should_run == 'true'
+    runs-on: [self-hosted, k3s, linux, amd64]
+    env:
+      SITE_URL: ${{ needs.check-trigger.outputs.site_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: tests/package.json
+
+      - name: Install dependencies
+        working-directory: tests
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: tests
+        run: npx playwright install chromium --with-deps
+
+      # ── Visual regression ─────────────────────────────────────────────────
+      - name: Run visual regression tests
+        if: ${{ github.event.inputs.skip_visual != 'true' }}
+        working-directory: tests
+        run: npx playwright test visual.spec.ts --reporter=list,github,html
+        env:
+          GITHUB_ACTIONS: 'true'
+        continue-on-error: true
+        id: visual
+
+      - name: Handle missing visual baselines
+        if: steps.visual.outcome == 'failure'
+        run: |
+          echo "::warning::Visual regression failed. If this is the first run, generate baselines:"
+          echo "::warning::  cd tests && npm ci && npx playwright install chromium --with-deps"
+          echo "::warning::  SITE_URL=https://blog.zolty.systems npx playwright test visual --update-snapshots"
+          echo "::warning::  git add tests/snapshots && git commit -m 'test: add visual regression baselines'"
+
+      # ── Link checking ──────────────────────────────────────────────────────
+      - name: Run link checker tests
+        working-directory: tests
+        run: npx playwright test links.spec.ts --reporter=list,github,html
+        env:
+          GITHUB_ACTIONS: 'true'
+
+      # ── Security header checks ──────────────────────────────────────────────
+      - name: Run security header tests
+        working-directory: tests
+        run: npx playwright test security.spec.ts --reporter=list,github,html
+        env:
+          GITHUB_ACTIONS: 'true'
+        continue-on-error: true  # Warn on security issues, don't block deploy
+
+      # ── Upload reports ────────────────────────────────────────────────────
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-${{ github.run_id }}
+          path: tests/playwright-report/
+          retention-days: 14
+
+      - name: Upload test screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-screenshots-${{ github.run_id }}
+          path: tests/test-results/
+          retention-days: 7
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Job 2: nuclei — OWASP Top 10 active network scan
+  # ─────────────────────────────────────────────────────────────────────────
+  nuclei-scan:
+    name: nuclei OWASP scan
+    needs: check-trigger
+    if: needs.check-trigger.outputs.should_run == 'true'
+    runs-on: [self-hosted, k3s, linux, amd64]
+    env:
+      SITE_URL: ${{ needs.check-trigger.outputs.site_url }}
+      NUCLEI_VERSION: "3.3.8"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install nuclei
+        run: |
+          INSTALL_DIR="$HOME/.local/bin"
+          mkdir -p "$INSTALL_DIR"
+          NUCLEI_BIN="$INSTALL_DIR/nuclei"
+
+          # Use cached binary if version matches
+          if [[ -f "$NUCLEI_BIN" ]] && "$NUCLEI_BIN" -version 2>&1 | grep -q "$NUCLEI_VERSION"; then
+            echo "nuclei $NUCLEI_VERSION already installed"
+          else
+            echo "Installing nuclei $NUCLEI_VERSION..."
+            ARCH=$(uname -m)
+            case "$ARCH" in
+              x86_64) GOARCH="amd64" ;;
+              aarch64|arm64) GOARCH="arm64" ;;
+              *) echo "Unsupported arch: $ARCH"; exit 1 ;;
+            esac
+            curl -fsSL \
+              "https://github.com/projectdiscovery/nuclei/releases/download/v${NUCLEI_VERSION}/nuclei_${NUCLEI_VERSION}_linux_${GOARCH}.zip" \
+              -o /tmp/nuclei.zip
+            unzip -q /tmp/nuclei.zip -d /tmp/nuclei-extract
+            mv /tmp/nuclei-extract/nuclei "$NUCLEI_BIN"
+            chmod +x "$NUCLEI_BIN"
+            rm -rf /tmp/nuclei.zip /tmp/nuclei-extract
+          fi
+
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          nuclei -version
+
+      - name: Update nuclei templates
+        run: nuclei -update-templates -silent
+
+      - name: Run OWASP Top 10 scan
+        id: nuclei_owasp
+        run: |
+          echo "## nuclei OWASP Scan Results" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Target:** $SITE_URL" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Timestamp:** $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+
+          # Run OWASP top 10 templates — categories:
+          #   exposure, misconfiguration, cve, vulnerability
+          nuclei \
+            -u "$SITE_URL" \
+            -tags owasp \
+            -severity low,medium,high,critical \
+            -o /tmp/nuclei-owasp.txt \
+            -json-export /tmp/nuclei-owasp.json \
+            -rate-limit 10 \
+            -timeout 15 \
+            -no-color \
+            -silent \
+            || true  # nuclei exits non-zero on findings; we handle reporting below
+
+          # Also scan for common misconfigurations and exposed files
+          nuclei \
+            -u "$SITE_URL" \
+            -tags "misconfig,exposure,takeover" \
+            -severity medium,high,critical \
+            -o /tmp/nuclei-misconfig.txt \
+            -json-export /tmp/nuclei-misconfig.json \
+            -rate-limit 10 \
+            -timeout 15 \
+            -no-color \
+            -silent \
+            || true
+
+          # Merge outputs
+          cat /tmp/nuclei-owasp.txt /tmp/nuclei-misconfig.txt > /tmp/nuclei-all.txt 2>/dev/null || true
+
+          # Parse and report findings
+          CRITICAL=$(grep -c '"severity":"critical"' /tmp/nuclei-owasp.json /tmp/nuclei-misconfig.json 2>/dev/null || echo 0)
+          HIGH=$(grep -c '"severity":"high"' /tmp/nuclei-owasp.json /tmp/nuclei-misconfig.json 2>/dev/null || echo 0)
+          MEDIUM=$(grep -c '"severity":"medium"' /tmp/nuclei-owasp.json /tmp/nuclei-misconfig.json 2>/dev/null || echo 0)
+          LOW=$(grep -c '"severity":"low"' /tmp/nuclei-owasp.json /tmp/nuclei-misconfig.json 2>/dev/null || echo 0)
+          TOTAL=$((CRITICAL + HIGH + MEDIUM + LOW))
+
+          echo "| Severity | Count |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|----------|-------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| 🔴 Critical | $CRITICAL |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| 🟠 High     | $HIGH |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| 🟡 Medium   | $MEDIUM |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| 🔵 Low      | $LOW |" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ -s /tmp/nuclei-all.txt ]]; then
+            echo "<details><summary>Findings detail</summary>" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            head -100 /tmp/nuclei-all.txt >> "$GITHUB_STEP_SUMMARY" || true
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            echo "</details>" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "✅ No findings detected." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+          # Store counts for next step
+          echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
+          echo "high=$HIGH" >> $GITHUB_OUTPUT
+          echo "total=$TOTAL" >> $GITHUB_OUTPUT
+
+      - name: Fail on critical/high findings
+        if: >
+          steps.nuclei_owasp.outputs.critical > 0 ||
+          steps.nuclei_owasp.outputs.high > 0
+        run: |
+          echo "::error::nuclei found critical or high severity issues!"
+          echo "Critical: ${{ steps.nuclei_owasp.outputs.critical }}"
+          echo "High: ${{ steps.nuclei_owasp.outputs.high }}"
+          echo "Review the nuclei scan results artifact for details."
+          exit 1
+
+      - name: Upload nuclei results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nuclei-results-${{ github.run_id }}
+          path: |
+            /tmp/nuclei-owasp.json
+            /tmp/nuclei-misconfig.json
+            /tmp/nuclei-all.txt
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Job 3: Summary — post combined status to step summary
+  # ─────────────────────────────────────────────────────────────────────────
+  summary:
+    name: Scan summary
+    needs: [playwright, nuclei-scan]
+    if: always() && needs.check-trigger.outputs.should_run == 'true'
+    runs-on: [self-hosted, k3s, linux, amd64]
+    steps:
+      - name: Write summary
+        run: |
+          echo "## Site Scan Complete" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Check | Result |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|-------|--------|" >> "$GITHUB_STEP_SUMMARY"
+          PW_STATUS="${{ needs.playwright.result }}"
+          NS_STATUS="${{ needs.nuclei-scan.result }}"
+          echo "| Playwright (visual · links · security) | ${PW_STATUS} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| nuclei OWASP scan                      | ${NS_STATUS} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Artifacts: playwright-report-${{ github.run_id }} · nuclei-results-${{ github.run_id }}" >> "$GITHUB_STEP_SUMMARY"

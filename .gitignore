@@ -43,3 +43,9 @@ hugo/content/posts/**/*.png
 *.pem
 *.key
 credentials.json
+
+# Site scanning (tests/)
+tests/node_modules/
+tests/playwright-report/
+tests/test-results/
+# snapshots/ is intentionally tracked — it holds visual regression baselines
