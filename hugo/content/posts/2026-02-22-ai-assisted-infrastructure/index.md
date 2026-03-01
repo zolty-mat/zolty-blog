@@ -177,7 +177,7 @@ The intersection of AI tools and infrastructure engineering is still early, but 
 
 - Simon Willison has written extensively about [using LLMs for code](https://simonwillison.net/2025/Mar/11/using-llms-for-code/), including his process for working with coding agents and the importance of testing AI-generated output.
 - Mitchell Hashimoto documented his [AI adoption journey](https://mitchellh.com/writing/my-ai-adoption-journey) -- the progression from skepticism to daily usage for Go development.
-- Anthropic's documentation on [CLAUDE.md files](https://code.claude.com/docs/en/claude-md) describes the project memory pattern that aligns closely with the Memory Protocol approach.
+- Anthropic's documentation on [CLAUDE.md files](https://docs.anthropic.com/en/docs/claude-code/memory) describes the project memory pattern that aligns closely with the Memory Protocol approach.
 - Honeycomb published a practical guide on [measuring Claude Code ROI and adoption](https://www.honeycomb.io/blog/measuring-claude-code-roi-adoption-honeycomb), using OpenTelemetry to track AI coding tool effectiveness.
 
 ## Lessons Learned
