@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <rect width="800" height="500" fill="#1a1a2e" rx="8"/>
+  <text x="400" y="36" text-anchor="middle" fill="#e6b422" font-size="16" font-weight="600">Linkerd Architecture</text>
+
+  <defs>
+    <marker id="ga2" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e6b422"/>
+    </marker>
+    <marker id="ga3" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a9e4a"/>
+    </marker>
+  </defs>
+
+  <!-- Control Plane Section -->
+  <rect x="40" y="55" width="720" height="140" rx="8" fill="none" stroke="#e6b422" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="60" y="76" fill="#e6b422" font-size="12" font-weight="600">CONTROL PLANE  (linkerd namespace)</text>
+
+  <!-- Destination -->
+  <rect x="60" y="90" width="200" height="85" rx="6" fill="#16213e" stroke="#e6b422" stroke-width="1.5"/>
+  <text x="160" y="115" text-anchor="middle" fill="#e6b422" font-size="12" font-weight="600">linkerd-destination</text>
+  <line x1="75" y1="125" x2="245" y2="125" stroke="#2a2a4a" stroke-width="1"/>
+  <text x="160" y="142" text-anchor="middle" fill="#c0c0d0" font-size="9">Service discovery</text>
+  <text x="160" y="156" text-anchor="middle" fill="#c0c0d0" font-size="9">Traffic policies &amp; profiles</text>
+  <text x="160" y="170" text-anchor="middle" fill="#a0a0b0" font-size="8">~100MB RAM, ~50m CPU</text>
+
+  <!-- Identity -->
+  <rect x="290" y="90" width="200" height="85" rx="6" fill="#16213e" stroke="#e6b422" stroke-width="1.5"/>
+  <text x="390" y="115" text-anchor="middle" fill="#e6b422" font-size="12" font-weight="600">linkerd-identity</text>
+  <line x1="305" y1="125" x2="475" y2="125" stroke="#2a2a4a" stroke-width="1"/>
+  <text x="390" y="142" text-anchor="middle" fill="#c0c0d0" font-size="9">mTLS certificate authority</text>
+  <text x="390" y="156" text-anchor="middle" fill="#c0c0d0" font-size="9">Issues 24h leaf certs</text>
+  <text x="390" y="170" text-anchor="middle" fill="#a0a0b0" font-size="8">~50MB RAM, ~20m CPU</text>
+
+  <!-- Proxy Injector -->
+  <rect x="520" y="90" width="220" height="85" rx="6" fill="#16213e" stroke="#e6b422" stroke-width="1.5"/>
+  <text x="630" y="115" text-anchor="middle" fill="#e6b422" font-size="12" font-weight="600">linkerd-proxy-injector</text>
+  <line x1="535" y1="125" x2="725" y2="125" stroke="#2a2a4a" stroke-width="1"/>
+  <text x="630" y="142" text-anchor="middle" fill="#c0c0d0" font-size="9">Mutating admission webhook</text>
+  <text x="630" y="156" text-anchor="middle" fill="#c0c0d0" font-size="9">Injects sidecar proxies</text>
+  <text x="630" y="170" text-anchor="middle" fill="#a0a0b0" font-size="8">~50MB RAM, ~20m CPU</text>
+
+  <!-- Data Plane Section -->
+  <rect x="40" y="220" width="720" height="250" rx="8" fill="none" stroke="#4a9e4a" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="60" y="241" fill="#4a9e4a" font-size="12" font-weight="600">DATA PLANE  (application namespaces)</text>
+
+  <!-- Pod 1 -->
+  <rect x="60" y="260" width="200" height="90" rx="6" fill="#16213e" stroke="#4a9e4a" stroke-width="1.5"/>
+  <text x="160" y="278" text-anchor="middle" fill="#a0a0b0" font-size="9">Pod: trade-bot</text>
+  <rect x="70" y="285" width="85" height="55" rx="4" fill="#0f3460"/>
+  <text x="112" y="310" text-anchor="middle" fill="#c0c0d0" font-size="10">Flask App</text>
+  <text x="112" y="326" text-anchor="middle" fill="#a0a0b0" font-size="8">:8080</text>
+  <rect x="163" y="285" width="85" height="55" rx="4" fill="#1a4a1a" stroke="#4a9e4a" stroke-width="1"/>
+  <text x="205" y="305" text-anchor="middle" fill="#4a9e4a" font-size="9" font-weight="600">linkerd</text>
+  <text x="205" y="318" text-anchor="middle" fill="#4a9e4a" font-size="9" font-weight="600">proxy</text>
+  <text x="205" y="332" text-anchor="middle" fill="#4a9e4a" font-size="7">Rust, ~15MB</text>
+
+  <!-- Pod 2 -->
+  <rect x="300" y="260" width="200" height="90" rx="6" fill="#16213e" stroke="#4a9e4a" stroke-width="1.5"/>
+  <text x="400" y="278" text-anchor="middle" fill="#a0a0b0" font-size="9">Pod: cardboard</text>
+  <rect x="310" y="285" width="85" height="55" rx="4" fill="#0f3460"/>
+  <text x="352" y="310" text-anchor="middle" fill="#c0c0d0" font-size="10">Flask App</text>
+  <text x="352" y="326" text-anchor="middle" fill="#a0a0b0" font-size="8">:8080</text>
+  <rect x="403" y="285" width="85" height="55" rx="4" fill="#1a4a1a" stroke="#4a9e4a" stroke-width="1"/>
+  <text x="445" y="305" text-anchor="middle" fill="#4a9e4a" font-size="9" font-weight="600">linkerd</text>
+  <text x="445" y="318" text-anchor="middle" fill="#4a9e4a" font-size="9" font-weight="600">proxy</text>
+  <text x="445" y="332" text-anchor="middle" fill="#4a9e4a" font-size="7">Rust, ~15MB</text>
+
+  <!-- Pod 3 -->
+  <rect x="540" y="260" width="200" height="90" rx="6" fill="#16213e" stroke="#4a9e4a" stroke-width="1.5"/>
+  <text x="640" y="278" text-anchor="middle" fill="#a0a0b0" font-size="9">Pod: media-library</text>
+  <rect x="550" y="285" width="85" height="55" rx="4" fill="#0f3460"/>
+  <text x="592" y="310" text-anchor="middle" fill="#c0c0d0" font-size="10">FastAPI</text>
+  <text x="592" y="326" text-anchor="middle" fill="#a0a0b0" font-size="8">:8000</text>
+  <rect x="643" y="285" width="85" height="55" rx="4" fill="#1a4a1a" stroke="#4a9e4a" stroke-width="1"/>
+  <text x="685" y="305" text-anchor="middle" fill="#4a9e4a" font-size="9" font-weight="600">linkerd</text>
+  <text x="685" y="318" text-anchor="middle" fill="#4a9e4a" font-size="9" font-weight="600">proxy</text>
+  <text x="685" y="332" text-anchor="middle" fill="#4a9e4a" font-size="7">Rust, ~15MB</text>
+
+  <!-- mTLS connections between proxies -->
+  <line x1="250" y1="315" x2="298" y2="315" stroke="#4a9e4a" stroke-width="2" marker-end="url(#ga3)"/>
+  <line x1="490" y1="315" x2="538" y2="315" stroke="#4a9e4a" stroke-width="2" marker-end="url(#ga3)"/>
+  <text x="274" y="308" text-anchor="middle" fill="#4a9e4a" font-size="7">mTLS</text>
+  <text x="514" y="308" text-anchor="middle" fill="#4a9e4a" font-size="7">mTLS</text>
+
+  <!-- Control plane to data plane connections -->
+  <line x1="160" y1="175" x2="160" y2="258" stroke="#e6b422" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#ga2)"/>
+  <line x1="390" y1="175" x2="400" y2="258" stroke="#e6b422" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#ga2)"/>
+  <line x1="630" y1="175" x2="640" y2="258" stroke="#e6b422" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#ga2)"/>
+
+  <!-- Labels for connections -->
+  <text x="98" y="220" fill="#a0a0b0" font-size="8">discovery</text>
+  <text x="350" y="220" fill="#a0a0b0" font-size="8">certs</text>
+  <text x="580" y="220" fill="#a0a0b0" font-size="8">config</text>
+
+  <!-- Traefik ingress -->
+  <rect x="60" y="380" width="160" height="55" rx="6" fill="#16213e" stroke="#888" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="140" y="403" text-anchor="middle" fill="#888" font-size="11" font-weight="600">Traefik Ingress</text>
+  <text x="140" y="420" text-anchor="middle" fill="#666" font-size="9">NOT meshed (external)</text>
+
+  <line x1="222" y1="400" x2="250" y2="340" stroke="#888" stroke-width="1.5" marker-end="url(#ga2)"/>
+  <text x="256" y="380" fill="#888" font-size="8">HTTP →</text>
+
+  <!-- Total footprint -->
+  <rect x="400" y="380" width="340" height="55" rx="6" fill="#0f3460" stroke="#e6b422" stroke-width="1"/>
+  <text x="570" y="403" text-anchor="middle" fill="#e6b422" font-size="11" font-weight="600">Total Overhead: ~1.5 GB on 86 GB cluster</text>
+  <text x="570" y="420" text-anchor="middle" fill="#a0a0b0" font-size="9">Control plane ~300MB + ~15MB per meshed pod sidecar</text>
+</svg>

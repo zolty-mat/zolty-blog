@@ -7,6 +7,9 @@ on:
       - 'hugo/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
+  schedule:
+    # Daily at 06:00 UTC -- publishes future-dated posts when their date arrives
+    - cron: '0 6 * * *'
 
 env:
   S3_BUCKET: ${{ secrets.S3_BUCKET_NAME }}
