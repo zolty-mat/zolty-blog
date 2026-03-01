@@ -18,7 +18,7 @@ TocOpen: false
 
 Cardboard is a TCG price tracker that monitors sealed product prices across 10 trading card games. It scrapes TCGPlayer and eBay using a three-tier strategy: pure API calls for bulk data, headless Selenium for product pages, and non-headless Selenium with a virtual display for sites that actively detect headless browsers. The scrapers run as Kubernetes Jobs on the same k3s cluster from [Cluster Genesis](/posts/2026-02-08-cluster-genesis/). A Flask dashboard with Chart.js renders historical price data, profit/loss calculations, and portfolio tracking. All scraping is intentionally rate-limited to match normal human browsing patterns -- the goal is polite data collection, not stress testing someone else's infrastructure.
 
-Source code: [GitHub](https://github.com/zolty-mat/cardboard)
+Source code will be published to GitHub when the project is ready.
 
 ## Why Build It
 
