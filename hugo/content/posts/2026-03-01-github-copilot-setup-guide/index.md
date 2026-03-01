@@ -1,6 +1,6 @@
 ---
 title: "Getting Started with GitHub Copilot: What Actually Works"
-date: 2026-03-01T20:00:00-06:00
+date: 2026-03-01T06:00:00-06:00
 draft: false
 author: "zolty"
 description: "A $20/month Copilot sub is the best AI tooling investment right now. Here's how to set it up so it actually knows your projects -- instructions, skills, memory, and model selection."
