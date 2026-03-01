@@ -1,9 +1,9 @@
 ---
-title: "GitHub Copilot from Zero: Skills, Memory, and Model Strategy for Real Projects"
+title: "Getting Started with GitHub Copilot: What Actually Works"
 date: 2026-03-01T20:00:00-06:00
 draft: false
 author: "zolty"
-description: "A practical guide to setting up GitHub Copilot right -- instructions, skills, path-scoped prompts, model selection, and why context management matters more than raw model size."
+description: "A $20/month Copilot sub is the best AI tooling investment right now. Here's how to set it up so it actually knows your projects -- instructions, skills, memory, and model selection."
 tags: ["ai", "copilot", "claude", "devops", "automation", "homelab", "productivity"]
 categories: ["Operations"]
 cover:
@@ -16,62 +16,45 @@ TocOpen: false
 
 ## TL;DR
 
-A $20/month GitHub Copilot subscription is currently the best-value AI coding tool available, giving you access to Claude Sonnet 4.6 inside VS Code. But the default setup gets you maybe 30% of the potential. The remaining 70% comes from a proper instruction architecture: a project-level `copilot-instructions.md` that acts as the AI's operating system, path-scoped instruction files for specific file types, and domain skill files the AI reads on demand. This post covers the full architecture I use across five repositories, including the mistakes that made me build it.
+A [$20/month GitHub Copilot subscription](https://github.com/features/copilot) gives you Claude Sonnet 4.6, GPT-4o, and Gemini inside VS Code. Out of the box it's useful. With a proper instruction setup — a `copilot-instructions.md` file, path-scoped rules, and skill documents — it becomes something you actually rely on. Most of the posts on this blog were built with this toolchain, mostly in the context of my k3s cluster, but the patterns apply anywhere. This is how I have it set up.
 
-## Why Copilot in 2026
+## Start Here If You're New to This
 
-There are three serious AI coding tools right now: GitHub Copilot, Cursor, and direct Claude/GPT API access. I use all three but Copilot is the one that stays open all day. The reasons:
+The best advice I can give someone picking up AI coding tools for the first time: **start with something you already know how to do.** Ask it to write a bash script you would have written yourself. Ask it to explain a piece of code you understand. Ask it to build a Jupyter notebook for something you already know the answer to.
 
-- **Native VS Code integration** — it reads your open tabs, your terminal output, your error panel. It has workspace context without you having to paste anything.
-- **Multi-model access** — the $20/month plan includes Claude Sonnet 4.6, GPT-4o, and Gemini 2.0 Flash. You pick the right model for the task.
-- **Instruction system** — the `copilot-instructions.md` + `instructions/` directory architecture is genuinely powerful once you understand it.
-- **Skills (agent tools)** — custom document files the AI loads on demand for domain-specific tasks. This is underused and underappreciated.
+The reason this matters is that you need a calibrated sense of what good output looks like before you start trusting the tool on things you don't know. AI tools are approachable — if you don't understand what it did, just ask it to explain. But you have to build the instinct for when it's confidently wrong, and you only get that by working in territory where you can verify the answer.
 
-What you get out of the box is autocomplete and a chat panel. What you build over time is a persistent AI collaborator that remembers your architecture, avoids your known failure modes, and speaks your project's language.
+In my professional life I'm using Copilot for things that have nothing to do with homelabs. It's writing code, it's building Jupyter notebooks that report on cloud and operating budgets, it's reviewing tickets from my eight direct reports and flagging anything that's missing fields or doesn't have enough detail to act on. It's tracking level-of-effort across the team. The common thread is that I already understood these problems well enough to know when the AI got them right.
 
-## Model Selection: Haiku, Sonnet, Opus
+The best example of where this has paid off: we just migrated to Azure, and one of the first fights is always patching. HA is simply not possible for several of our services — databases being the obvious one — so dev is understandably protective about letting us patch. In AWS they wouldn't let us do it at all. The risk was too high and the documentation wasn't there to make them comfortable.
 
-The Copilot subscription gives you access to Claude models at different tiers. Understanding the tradeoffs is important because: **the wrong model choice makes AI tools worse, not just slower**.
+So I had Copilot write the whole patching process in Python. It keeps tickets updated, reviews patch severity, tests specific patches, and — the part that actually convinced dev — it writes tasks that actively exploit the CVE the patch is supposed to fix, proves we're vulnerable, applies the patch, then runs the same exploit again to prove we're not. It keeps Confluence, Slack, and our alert monitoring updated throughout. Dev now has the documentation, the testing, and the proof chain to feel confident letting us do something as basic as patching. We're running the POC this month and rolling it out next patch cycle.
 
-### The Three Tiers
+That whole process was built with Copilot. I knew what a good patch workflow looked like. I knew what "done" meant. The AI wrote it, I reviewed it, and we're taking it to prod. That's the pattern that works.
 
-| Model | Capability | Speed | Best For |
-|---|---|---|---|
-| Haiku | Fast reasoning, smaller | Fastest | Line completions, quick answers, high-volume tasks |
-| Sonnet | Balanced capability | Medium | Most coding tasks, multi-step refactoring, debugging |
-| Opus | Deepest reasoning | Slowest | Complex architecture decisions, multi-file analysis |
+## Which Model Should You Use
 
-These are **distinct models with different training**, not the same model at different compression ratios. Opus is meaningfully smarter on complex reasoning tasks. Haiku is meaningfully faster for simple ones.
+The Copilot subscription gives you access to Claude models at different tiers. Haiku, Sonnet, and Opus are **distinct models with genuinely different capabilities** — not the same thing at different settings.
 
-### Context Is the Real Variable
+| Model | What It's Good At |
+|---|---|
+| Haiku | Fast completions, simple bounded tasks, high-volume stuff |
+| Sonnet | Most coding work, debugging, refactoring — the daily driver |
+| Opus | Architecture decisions, complex multi-file analysis, when getting it right matters more than speed |
 
-Here is the thing that actually bites people: **all three models have large context windows (200K tokens), but how you fill that context determines everything**.
+### Context Matters More Than Model Size
 
-A Haiku inference with a tight, relevant 2,000-token context will outperform an Opus inference drowning in 50,000 tokens of irrelevant file contents. The model cannot distinguish signal from noise in your context — that is your job.
+Here's the thing that isn't obvious at first: all three models have large context windows (200K tokens), but what you put in that context is more important than which model you pick. A Haiku call with a tight, relevant 2,000-token prompt will beat an Opus call drowning in 50,000 tokens of files the model has to wade through to find what's relevant.
 
-Every time you open a new Copilot chat:
-- Files you have open in VS Code get included
-- Your terminal output may get included
-- Your instruction files get included
-- Any files you `#`-reference get included
+Every time you open Copilot chat, it pulls in your open tabs, your terminal output, your instruction files. If you have 12 unrelated files open and a 500-line terminal buffer, you're spending that context budget on noise. The model can't tell what matters — that's on you.
 
-An unfocused session with 12 tabs open, a 500-line terminal buffer, and a 200-line instructions file is burning tokens on content the model will weight equally with what actually matters.
-
-### Practical Model Selection
-
-- **Haiku**: Use in the inline autocomplete flow where latency matters. Use when the task is obviously bounded (write a bash one-liner, complete this YAML field, generate a SQL query).
-- **Sonnet**: Use for most chat interactions. Debugging session, "explain this error", "refactor this function", "write the Kubernetes manifest for this service". This is the daily driver.
-- **Opus**: Use when you are making architectural decisions, analyzing a complex failure across multiple systems, or doing something where getting it right matters more than getting it fast. Once a week, not hourly.
+In practice: use Sonnet for most things, Haiku when you just need something fast and simple, and Opus when you're working through something genuinely complex where you'd rather wait a bit longer and have it actually get there.
 
 ## Layer 1: copilot-instructions.md
 
-The foundation of the whole system. GitHub Copilot reads this file for every request in your workspace. It is the AI's persistent memory between sessions — without it, every conversation starts from zero.
+This is the foundation. Copilot reads `.github/copilot-instructions.md` for every request in your workspace. Without it, every conversation starts from scratch — the AI has no idea what your project is, what patterns you follow, or what mistakes to avoid.
 
-Create `.github/copilot-instructions.md` in your repository root.
-
-### What Belongs Here
-
-Think of it as the AI's **project briefing document**. A new senior engineer joining your team would need to read it to understand:
+Think of it as the briefing document for a new engineer joining your team. What would they need to read to not immediately break something?
 
 ```markdown
 # My Project — Copilot Operating System
@@ -83,13 +66,11 @@ After significant work: update docs/ if new knowledge was discovered.
 
 ## Platform Identity
 
-<!-- What is this system? -->
 Private cloud running Proxmox VE + k3s Kubernetes. 7 nodes: 3 control plane,
 4 workers (amd64 Debian 13). All infrastructure Terraform + Ansible managed.
 
 ## Engineering Principles
 
-<!-- How are decisions made here? -->
 - Infrastructure as Code first: Terraform for provisioning, Ansible for config
 - Declarative over imperative: manifests over shell scripts
 - Least privilege: RBAC per-namespace, secrets in K8s secrets only
@@ -97,7 +78,6 @@ Private cloud running Proxmox VE + k3s Kubernetes. 7 nodes: 3 control plane,
 
 ## Architecture
 
-<!-- What does the system look like? -->
 - Traefik sole ingress controller. Do not install NGINX Ingress.
 - MetalLB L2 LoadBalancer
 - Longhorn distributed storage
@@ -105,7 +85,6 @@ Private cloud running Proxmox VE + k3s Kubernetes. 7 nodes: 3 control plane,
 
 ## High-Impact Anti-Patterns
 
-<!-- What mistakes does the AI keep making? -->
 - Service selector trap: selector MUST include component label when postgres
   shares a namespace. Without it, ~50% of requests route to postgres (502s).
 - ARC label replacement: 'labels' REPLACES defaults. 'self-hosted' MUST be listed.
@@ -113,26 +92,19 @@ Private cloud running Proxmox VE + k3s Kubernetes. 7 nodes: 3 control plane,
 
 ## Decision Heuristics
 
-<!-- Quick reference for common situations -->
 - Adding a service: Read docs/new-service-checklist.md and follow exactly.
 - Debugging 502s: Check Service selector includes component label first.
 ```
 
-### What Does NOT Belong Here
+### What Not to Put Here
 
-The most common mistake is stuffing `copilot-instructions.md` with everything. It becomes a 500-line wall of text that the AI reads but fails to prioritize.
+The most common mistake is dumping everything into this one file. It becomes a wall of text and the AI loses the signal. Keep this file as a navigation layer — telling the AI where to find things, not containing everything itself.
 
-**Do not put in copilot-instructions.md:**
-- Failure patterns and incident history → move to `docs/ai-lessons.md`
-- File-type-specific conventions → move to path-scoped instructions
-- Domain procedure documentation → move to skill files
-- Specific configuration values → link to the file instead of duplicating
+Move failure patterns and incident history to `docs/ai-lessons.md`. Move file-type conventions to path-scoped instruction files. Move domain procedures to skill files (more on those below).
 
-The copilot-instructions file should be a **navigation layer** that tells the AI where to find things, not the thing itself.
+### The Memory Protocol
 
-### The Memory Protocol Pattern
-
-The most important feature of the instructions file is establishing a memory protocol. At the top of my instructions file is this directive:
+The single most important thing to set up is a feedback loop. At the top of my instructions file:
 
 ```markdown
 ## Memory Protocol
@@ -144,11 +116,11 @@ After significant work: update the relevant docs/ file if new knowledge was
 discovered. Never store secrets or credentials.
 ```
 
-This creates a feedback loop. Every time you discover a new failure pattern, you add it to `docs/ai-lessons.md`. The AI reads it next session. The mistake does not get repeated. Over time, the AI gets better at working in your specific environment.
+Every time the AI makes a mistake that I catch, I add it to `docs/ai-lessons.md`. Next session, the AI reads it before touching anything. The mistake doesn't happen again. After a few months of this, the AI is meaningfully better at working in my specific environment than it was on day one — not because the model changed, but because it has accumulated knowledge about my setup.
 
 ## Layer 2: Path-Scoped Instructions
 
-GitHub Copilot supports instruction files that only activate for specific file patterns. These live in `.github/instructions/` and use an `applyTo` front matter field.
+Copilot supports instruction files that only activate for specific file patterns, living in `.github/instructions/` with an `applyTo` header:
 
 ```
 .github/instructions/
@@ -159,7 +131,7 @@ GitHub Copilot supports instruction files that only activate for specific file p
 └── docs.instructions.md        # applies to docs/**/*.md
 ```
 
-Example structure for a file:
+Example:
 
 ```markdown
 ---
@@ -167,8 +139,6 @@ applyTo: "kubernetes/**/*.{yml,yaml}"
 ---
 
 # Kubernetes Manifests
-
-## Required Labels
 
 Every Deployment must include both labels:
 ```yaml
@@ -178,52 +148,33 @@ labels:
 ```
 
 Omitting `component` causes Service selector issues when PostgreSQL
-shares the namespace.
-
-## Ingress
-
-All Ingresses use cert-manager:
-```yaml
-annotations:
-  cert-manager.io/cluster-issuer: letsencrypt-prod
+shares the namespace. All Ingresses use cert-manager letsencrypt-prod.
 ```
 
-Never use self-signed certs in production manifests.
-```
+The point is specificity. When you're editing Terraform, you don't need the Ansible conventions. When you're in a GitHub Actions workflow, you don't need the Kubernetes manifest rules. The AI gets the right context for the right task without burning the context budget on things that don't matter.
 
-The benefit here is **specificity without noise**. When you are editing a Terraform file, you do not need the Ansible conventions. When you are writing a GitHub Actions workflow, you do not need the Kubernetes manifest rules. The AI gets the right context for the right task without context budget waste.
+**kubernetes.instructions.md**: Label requirements, ingress annotations, resource limits, image pull secrets.
 
-### What to Put in Each File
+**terraform.instructions.md**: Provider versions, naming conventions, module patterns, state backend config.
 
-**kubernetes.instructions.md**: Label requirements, ingress annotations, resource limits, SecurityContext defaults, StorageClass choices, image pull secrets.
+**ansible.instructions.md**: Idempotency patterns, variable precedence, role structure.
 
-**terraform.instructions.md**: Provider versions, naming conventions, module patterns, state backend config, which resources to import vs recreate.
-
-**ansible.instructions.md**: Idempotency patterns, variable precedence, role structure, when to use handlers vs direct tasks.
-
-**ci-cd.instructions.md**: Runner labels, secret names, environment names, deployment strategy (Recreate vs RollingUpdate), ECR auth refresh steps.
+**ci-cd.instructions.md**: Runner labels, secret names, deployment strategies, auth refresh steps.
 
 ## Layer 3: Skill Files
 
-Skills are the most powerful and least understood feature of the Copilot agent system. A skill is a markdown file that the AI agent reads on demand when it detects the task falls within that domain.
+Skills are the most useful and least talked-about part of the Copilot agent setup. A skill is a markdown file the agent reads when it figures out a task falls within that domain. You write it once, and instead of re-explaining your deployment procedure every session, the agent just loads it.
 
 ```
 .claude/skills/
-├── k3s-deployment/
-│   └── SKILL.md        # Full deployment checklist
-├── k3s-debugging/
-│   └── SKILL.md        # Debugging procedures and triage steps
-├── docker-ecr/
-│   └── SKILL.md        # Build and push to ECR
-├── grafana-dashboards/
-│   └── SKILL.md        # Dashboard creation patterns
-└── terraform-infra/
-│   └── SKILL.md        # Infrastructure provisioning procedures
+├── k3s-deployment/SKILL.md        # Full deployment checklist
+├── k3s-debugging/SKILL.md         # Debugging procedures and triage
+├── docker-ecr/SKILL.md            # Build and push to ECR
+├── grafana-dashboards/SKILL.md    # Dashboard creation patterns
+└── terraform-infra/SKILL.md       # Infrastructure provisioning
 ```
 
-The skill file is a detailed, domain-specific document that you would otherwise have to paste into every conversation. Instead, you write it once and the agent loads it when relevant.
-
-A minimal skill file looks like this:
+A skill file:
 
 ```markdown
 ---
@@ -234,12 +185,6 @@ keywords: deploy, service, application, kubernetes, manifest, ecr, ingress
 
 # K3s Deployment
 
-## When to Use This Skill
-
-- Adding a new application to the cluster
-- Creating Kubernetes manifests for an existing service
-- Setting up CI/CD for a new app
-
 ## Deployment Checklist
 
 1. Create ECR repository in Terraform
@@ -249,10 +194,6 @@ keywords: deploy, service, application, kubernetes, manifest, ecr, ingress
 5. Configure runner RBAC (Role + RoleBinding)
 6. Update docs/deployed-applications.md
 
-## Manifest Templates
-
-[... actual YAML templates ...]
-
 ## Common Mistakes
 
 - Forgetting the component label on the Service selector
@@ -260,31 +201,16 @@ keywords: deploy, service, application, kubernetes, manifest, ecr, ingress
 - Missing /metrics endpoint (every service must expose metrics)
 ```
 
-### Skill File Best Practices
-
-**Be prescriptive, not descriptive.** The skill file is not documentation about how the system works. It is instructions for what to do. "Create the ECR repository first" is better than "ECR repositories are managed in Terraform."
-
-**Include actual templates and code.** The agent will use them. Generic descriptions of what YAML "should look like" are useless. Actual YAML the agent can copy and modify is valuable.
-
-**List the failure modes.** Every skill file should end with "Common Mistakes" or "Anti-Patterns" — the things that go wrong on this type of task in your specific environment. This is where institutional knowledge lives.
-
-**Keep descriptions tight for the agent's skill-selection logic.** The `description` field in the front matter is what the agent uses to decide whether to load the skill. It needs to be specific enough that the agent loads it when relevant and does not load it when not.
+Be prescriptive, not descriptive. "Create the ECR repository first" is useful. "ECR repositories are managed in Terraform" is not. Include real templates the agent can copy. End every skill file with the failure modes specific to that task in your environment — that's where the institutional knowledge actually lives.
 
 ## Layer 4: The Living Lessons Database
 
-`docs/ai-lessons.md` is the most important file in the system that you do not write upfront. You build it incrementally, one incident at a time.
-
-Every time:
-- The AI recreates a bug that has been fixed before
-- A deployment fails in a predictable way
-- You catch the AI ignoring a constraint it should know about
-
-...you add a new entry. The format is consistent:
+`docs/ai-lessons.md` is the file you build one incident at a time. Every time the AI recreates a fixed bug, every time a deployment fails in a predictable way, every time you catch it ignoring something it should know — you write it down:
 
 ```markdown
 ## Service Selector Missing Component Label
 
-**Symptom**: ~50% of HTTP requests return 502. `kubectl logs` on the app pod
+**Symptom**: ~50% of HTTP requests return 502. kubectl logs on the app pod
 shows no requests arriving. Traefik upstream health checks are passing.
 
 **Root Cause**: PostgreSQL shares the namespace. Service with only `app` label
@@ -296,92 +222,44 @@ and the Service selector.
 **Prevention**: Instruction file now requires both labels on every Deployment.
 ```
 
-After 20-30 incidents, this file becomes a high-signal database that prevents whole categories of recurring mistakes. The AI reads it (via the Memory Protocol instruction) before touching infrastructure.
+After 20-30 incidents this becomes a high-signal document that prevents entire categories of recurring mistakes. The AI reads it before touching infrastructure (that's the Memory Protocol directive). Mine is 482 lines now and that number directly correlates to how rarely those mistakes happen.
 
 ## Context Management in Practice
 
-Here is the thing nobody tells you when you start with AI coding tools: **context management is a skill you have to develop**.
+Nobody tells you this when you start: **context management is a skill you have to develop.** The AI doesn't know what's important. It weights everything in the context window roughly equally, so if you have 10,000 tokens of files the AI has to wade through to find 500 tokens of what actually matters, you're going to get mediocre answers regardless of which model you're running.
 
-The AI does not know what is important. It weights everything in the context window roughly equally. If you give it 10,000 tokens of irrelevant file contents and 500 tokens describing the actual problem, do not be surprised when the answer reflects a poor signal-to-noise ratio.
+Every time you open Copilot chat, VS Code sends your open tabs, terminal output, instruction files, and anything you `#`-reference. If you have 15 tabs open, 14 unrelated, you're burning that context budget on noise.
 
-### Good Context Hygiene
+A few things that actually help:
 
-**Close files you are not working on.** VS Code sends open editor tabs to Copilot. If you have 15 tabs open, 14 of which are unrelated, you are burning context budget.
+**Close files you're not touching.** Obvious but easy to forget.
 
-**Use `#file` references deliberately.** When you reference a file in chat, include only the file that is actually relevant to your question. Not the entire `kubernetes/` directory.
+**Use `#file` deliberately.** Reference only the file that's actually relevant, not the whole directory.
 
-**Start fresh for context-heavy tasks.** If you have been debugging a 502 error for 45 minutes in a single chat session and the conversation is full of red herrings, start a new chat with a clean problem statement. The accumulated failed attempts in the conversation history are hurting you, not helping.
+**Start a new chat when a session goes sideways.** If you've been debugging something for 45 minutes in one chat and there's a bunch of failed attempts in the history, those wrong turns are in the context too and they're hurting you. A fresh chat with a clean problem statement usually gets further faster.
 
-**Be explicit about what the AI should ignore.** "Ignore the commented-out sections" is a legitimate prompt instruction.
+**Ask specific questions.** "Debug my cluster" is a waste. "The readiness probe is failing after redeploy, here are the events: `[events]`. What's the most likely cause?" gives the model something to work with.
 
-**Smaller, focused questions outperform giant vague ones.** "Debug my cluster" is a waste of tokens. "The readiness probe on the app pod is failing after a redeploy. Here are the events: `[events]`. What is the most likely cause?" gives the model something to work with.
+The counterintuitive part: for most tasks you're better off with Sonnet and good context than Opus with garbage in. The quality of what you feed it matters more than how powerful the model is.
 
-### The Context-vs-Model Tradeoff
+## If You're Just Getting Started
 
-This is the counterintuitive insight: for most tasks, you are better off with Sonnet and excellent context than Opus and mediocre context. The quality of your input matters more than the power of the model.
+Write the `copilot-instructions.md` first. Three sections is enough to start: what is this project, what are the 5-10 conventions that matter, and what are the 3-5 mistakes you want it to avoid. Keep it under 100 lines — you can always add more but you can't easily fix a bloated instructions file that the AI reads but doesn't prioritize.
 
-Save Opus for the problems where you genuinely need deeper reasoning — architectural decisions, complex failure analysis across multiple systems, generating something from scratch that requires creative problem-solving. For "write the Deployment manifest for my new service", Sonnet with your instruction files loaded is sufficient and significantly faster.
+Pick two file types you work with most and write path-scoped instruction files for them. Don't do ten on day one. You don't know yet what needs scoped instructions.
 
-## Starting From Scratch: Day One Setup
+Take your most complex recurring task — the one where you always have to look up the steps or copy from a previous implementation — and write it as a skill file. Next time you need to do it, have Copilot load the skill.
 
-If you just bought Copilot, here is the shortest path to something functional:
+After your first significant mistake, start `docs/ai-lessons.md` with one entry. Add to it every time something goes wrong.
 
-### Step 1: Write the instructions file
+Run that for a week and then adjust based on where it helped and where it didn't. Those gaps will tell you exactly what to add.
 
-Create `.github/copilot-instructions.md` in your main repository. Write three sections:
+## What I Got Wrong First
 
-1. **What is this project**: 3-5 sentences describing the tech stack and purpose.
-2. **Conventions**: The 5-10 rules that matter most for your codebase.
-3. **Anti-patterns**: The 3-5 mistakes you have already made or want to avoid.
+I set up Copilot with no instructions and spent a while being annoyed that it kept suggesting NGINX Ingress when Traefik is the sole ingress controller in my cluster. It kept generating arm64 Docker builds for an amd64-only environment. It kept creating PostgreSQL configs without any awareness of Longhorn's storage constraints.
 
-Keep it under 100 lines. You can always add more.
-
-### Step 2: Pick two path-scoped instruction files
-
-Start with the two file types you work with most. If you do a lot of Kubernetes and Python, create `kubernetes.instructions.md` and `python.instructions.md`. Do not create 10 files on day one — you do not know yet what needs scoped instructions.
-
-### Step 3: Make your first skill
-
-Pick the most complex recurring task in your workflow. The one where you always have to look up the steps, check a runbook, or copy from a previous implementation. Write that procedure as a skill file. Next time you need to do it, have Copilot load the skill and walk you through it.
-
-### Step 4: Start the lessons database
-
-After your first significant mistake (or prevented mistake), create `docs/ai-lessons.md` with one entry. Add to it every time something goes wrong. 
-
-### Step 5: Run one week, then adjust
-
-After a week, look at where Copilot helped and where it did not. The answer usually points at gaps in the instruction system. Add what is missing.
-
-## The Honest Expectations Section
-
-AI tools will not make you 10x faster on day one. That number is marketing. Here is what actually happens:
-
-**Week 1-2**: Learning the tool, prompt patterns, understanding what it handles well. You might be slower than normal because you are adjusting workflows.
-
-**Week 3-4**: You have the basic instruction system set up. Boilerplate generation is fast. Explanations are helpful. You are spending less time on syntax and more on architecture.
-
-**Month 2+**: The instruction system has accumulated real knowledge about your project. The AI stops making the same mistakes. It generates code that fits your patterns without you having to explain them. This is when the productivity gains become real.
-
-**The failure mode** is getting frustrated in week 1 and concluding AI coding tools do not work. They require investment to set up properly, like any tool.
-
-## Lessons I Learned Doing This Wrong First
-
-I set up Copilot without any instructions and wondered why it kept suggesting NGINX Ingress in a cluster where Traefik is the sole ingress controller. It kept generating arm64 Docker builds for a cluster that is amd64-only. It kept creating PostgreSQL configs without considering Longhorn's storage constraints.
-
-Every one of those mistakes was my fault, not the model's. The model had no way to know. Once I added those constraints to the instruction system, they stopped.
-
-The biggest lesson: **treat every AI mistake as a documentation failure, not a model failure.** If the AI did something wrong that it could have done right with the right context, add that context to the instruction system. The cost is 10 minutes of writing. The benefit is that mistake never happens again.
-
-## What's Next
-
-The system described here is not an endpoint — it is a starting point. Once you have the basics working:
-
-- **Add repository cross-links**: If you work across multiple repositories, your skills and lessons database can reference each other. A blog repository's content generation skill can reference the infrastructure repository's deployment process.
-- **Automate lessons capture**: After a major incident, run a Copilot prompt that helps you draft the lessons database entry while the context is fresh.
-- **Review the instructions quarterly**: Projects evolve. Anti-patterns get fixed at the source. Conventions change. The instruction files need maintenance or they drift from reality and start sending the AI in wrong directions.
-
-The goal is not a perfect system on day one. It is a system that gets slightly better every week, accumulating knowledge in a form the AI can actually use.
+Every one of those was my fault. The model had no way to know. Once I added those constraints to the instruction system, they stopped. The biggest shift in how I think about this tooling: **every AI mistake is a documentation failure, not a model failure.** If the AI did something wrong that it could have done right with the right context, add that context. It takes 10 minutes. The mistake doesn't happen again.
 
 ---
 
-*Related: [AI-Assisted Infrastructure: Claude, Copilot, and the Memory Protocol](/posts/2026-02-22-ai-assisted-infrastructure/) covers the full AI toolchain for homelab infrastructure, and [Building an AI Memory System](/posts/2026-02-26-ai-memory-system/) traces the three generations of instruction architecture.*
+*Check out [AI-Assisted Infrastructure: Claude, Copilot, and the Memory Protocol](/posts/2026-02-22-ai-assisted-infrastructure/) for how this whole toolchain comes together for infrastructure work, and [Building an AI Memory System](/posts/2026-02-26-ai-memory-system/) for how the instruction architecture evolved over time.*
