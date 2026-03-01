@@ -18,7 +18,6 @@ TocOpen: false
 
 Intel iGPU passthrough from Proxmox to a k3s VM enables hardware video transcoding with minimal CPU overhead. This guide covers the complete process: enabling IOMMU, configuring VFIO, blacklisting the i915 driver, rebuilding the VM with q35/OVMF, and verifying VA-API inside the VM. The Intel UHD 630 in the {{< amzn search="Lenovo ThinkCentre M920q" >}}M920q{{< /amzn >}} handles H.264 and HEVC encode/decode at real-time speeds.
 
-![Two Lenovo ThinkCentre M920q mini PCs showing top and bottom views with hardware labels](https://blog.zolty.systems/media/images/blog/2026-02-18-gpu-passthrough/m920q-labels.jpg)
 
 ## Why GPU Passthrough?
 
@@ -47,7 +46,6 @@ Proxmox runs as the hypervisor on bare metal. The Intel UHD 630 is an integrated
 
 The {{< amzn search="Lenovo ThinkCentre M920q" >}}Lenovo M920q{{< /amzn >}} BIOS needs VT-d (Intel Virtualization Technology for Directed I/O) enabled:
 
-![Hands-on with the M920q hardware — inserting an expansion module into the compact chassis](https://blog.zolty.systems/media/images/blog/2026-02-18-gpu-passthrough/m920q-drive.jpg)
 
 ```
 BIOS → Security → Virtualization
@@ -203,7 +201,6 @@ Jellyfin's deployment uses `nodeSelector: gpu: intel-uhd-630` to land on this no
 
 The {{< amzn search="Lenovo ThinkCentre M920q" >}}M920q{{< /amzn >}} nodes all have the same Intel UHD 630 iGPU. The process to add GPU passthrough to additional nodes:
 
-![Multiple 1U rackmount devices with active cooling fans and status LEDs in the homelab rack](https://blog.zolty.systems/media/images/blog/2026-02-18-gpu-passthrough/rack-servers.jpg)
 
 1. Run `proxmox-gpu-prep.yml --limit pve-1` (or pve-2)
 2. Add `gpu_passthrough` configuration to the corresponding agent in `terraform.tfvars`

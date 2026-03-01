@@ -18,7 +18,6 @@ TocOpen: false
 
 Today was cluster genesis. Starting from 3 bare Proxmox hosts, I built the entire infrastructure-as-code pipeline: Terraform to provision VMs from cloud-init templates, Ansible to configure and bootstrap k3s, and a full GitOps deployment model with SOPS-encrypted secrets and S3-backed Terraform state. By end of day: 3 server nodes, 3 agent nodes, cert-manager with Route53 DNS-01 validation, and self-hosted GitHub Actions runners on the cluster itself.
 
-![Two Lenovo ThinkCentre M920q mini PCs with cases open, revealing Noctua CPU coolers — the workhorses of this cluster](https://blog.zolty.systems/media/images/blog/2026-02-08-cluster-genesis/m920q-internals.jpg)
 
 ## The Architecture
 
@@ -47,7 +46,6 @@ The design goal was simple: everything as code, nothing manual, everything repro
 
 Each physical host is a {{< amzn search="Lenovo ThinkCentre M920q" >}}Lenovo ThinkCentre M920q{{< /amzn >}} with an Intel i5-8500T and 32GB of DDR4 RAM — compact, quiet, and power-efficient enough to run 24/7 in a basement.
 
-![The M920q cluster nodes racked up with active Noctua cooling fans](https://blog.zolty.systems/media/images/blog/2026-02-08-cluster-genesis/m920q-rack.jpg)
 
 ## Phase 1: Cloud-Init VM Template
 
@@ -178,7 +176,6 @@ End of day 1 stats:
 
 Total time from bare Proxmox hosts to fully operational cluster: about 12 hours, including all the debugging.
 
-![The homelab in its early days — networking gear and mini PCs taking shape on wooden framing in the basement](https://blog.zolty.systems/media/images/blog/2026-02-08-cluster-genesis/homelab-overview.jpg)
 
 ## Lessons Learned
 
