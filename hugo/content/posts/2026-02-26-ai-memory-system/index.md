@@ -249,7 +249,7 @@ The standardization means that when I (or the AI) switch between repositories, t
 
 ## The Anthropic CLAUDE.md Pattern
 
-Anthropic's Claude Code tool uses a similar pattern: a `CLAUDE.md` file at the project root that Claude reads automatically at the start of every session. The [CLAUDE.md documentation](https://code.claude.com/docs/en/claude-md) describes it as a way to set "coding standards, architecture decisions, preferred libraries, and review checklists."
+Anthropic's Claude Code tool uses a similar pattern: a `CLAUDE.md` file at the project root that Claude reads automatically at the start of every session. The [CLAUDE.md documentation](https://docs.anthropic.com/en/docs/claude-code/memory) describes it as a way to set "coding standards, architecture decisions, preferred libraries, and review checklists."
 
 There is a philosophical alignment between `copilot-instructions.md` and `CLAUDE.md`:
 
@@ -282,7 +282,7 @@ The investment to maintain the system is small: a few minutes per production inc
 
 ## Further Reading
 
-- Anthropic's [CLAUDE.md documentation](https://code.claude.com/docs/en/claude-md) describes the project memory pattern for Claude Code, including modular rules and memory files.
+- Anthropic's [CLAUDE.md documentation](https://docs.anthropic.com/en/docs/claude-code/memory) describes the project memory pattern for Claude Code, including modular rules and memory files.
 - Harper Reed wrote about his [LLM codegen workflow](https://harperreed.com) using structured project documentation and AI-friendly specification files that align closely with the Memory Protocol approach.
 - Honeycomb's engineering blog covers [AI in production operations](https://www.honeycomb.io/blog/ai-in-production-is-growing-faster-than-we-can-trust-it), including the trust gap between AI capability and AI reliability -- the exact problem the Memory Protocol addresses.
 - Simon Willison's [writing on AI-assisted programming](https://simonwillison.net/2025/Mar/11/using-llms-for-code/) emphasizes the importance of testing AI output, which complements the guardrail approach described here.

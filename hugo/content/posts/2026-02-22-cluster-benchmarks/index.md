@@ -144,7 +144,7 @@ This is where it gets interesting. I measured CPU temperatures at idle and immed
 | pve3 | 48°C | 57°C | +9°C | **Yes** — 3D printed case + Noctua fan |
 | pve4 | 49°C | **75°C** | **+26°C** | **No** — stock M920q chassis |
 
-The delta tells the story. pve1/2/3 have custom 3D-printed ventilated cases with {{< amzn search="Noctua NF-A4x10 5V PWM 40mm fan" >}}Noctua NF-A4x10 5V PWM fans{{< /amzn >}} — a mod I covered in my [3D printing post](/posts/2026-03-06-bambu-lab-p1s-3d-printing/). pve4 is running in the stock M920q chassis with the stock heatsink. The difference is dramatic:
+The delta tells the story. pve1/2/3 have custom 3D-printed ventilated cases with {{< amzn search="Noctua NF-A4x10 5V PWM 40mm fan" >}}Noctua NF-A4x10 5V PWM fans{{< /amzn >}} — a mod I covered in an upcoming 3D printing post. pve4 is running in the stock M920q chassis with the stock heatsink. The difference is dramatic:
 
 - **With custom cooling**: +9 to +12°C under full load. The CPUs barely notice.
 - **Without custom cooling**: +26°C under full load. Still safe (75°C is well below the 100°C thermal limit), but the i7 is working significantly harder to dissipate heat.
