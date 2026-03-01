@@ -3,6 +3,24 @@
 html { scroll-behavior: smooth; }
 </style>
 
+<!-- GLightbox: wrap content images and initialise lightbox -->
+<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Wrap every content image that isn't already inside an <a> tag
+  document.querySelectorAll('.post-content img').forEach(function (img) {
+    if (img.parentElement.tagName.toLowerCase() === 'a') return;
+    var a = document.createElement('a');
+    a.href = img.src;
+    a.className = 'glightbox';
+    a.setAttribute('data-title', img.alt || '');
+    img.parentNode.insertBefore(a, img);
+    a.appendChild(img);
+  });
+  GLightbox({ touchNavigation: true, loop: true, zoomable: true });
+});
+</script>
+
 {{ partial "affiliate-disclosure.html" . }}
 
 {{ if .Store.Get "hasMermaid" }}
